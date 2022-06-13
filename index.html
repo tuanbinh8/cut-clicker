@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cut clicker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="nav">
+        <div>
+            <b><p id="point">Cut: 0</p></b>
+            <p id="cps">CPS: 0</p>
+        </div>
+        <div>
+            <b><p id="name"></p></b>
+            <p id="_leaderboard">Leaderboard</p>
+            <p id="reg">Register</p>
+            <p id="log">Log in</p>
+            <p id="sign-out" style="display: none;">Sign out</p>
+        </div>
+    </div>
+    <ul id="leaderboard">
+    </ul>
+    <div id="container">
+        <img id="cut" src="cut.png" alt="cut" width="225">
+    </div>
+    <div id="blur">
+        <div class="loader"></div>
+        <p>Syncing...</p>
+    </div>
+</body>
+<script type="module" src="script.js"></script>
+
+</html>

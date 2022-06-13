@@ -1,0 +1,98 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Sans-serif;
+}
+
+#blur {
+    z-index: 999;
+    display: none;
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0.5;
+    background-color: black;
+    /*display: flex; */
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.loader {
+    border: 16px solid white;
+    border-radius: 50%;
+    border-top: 16px solid #2f96db;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+#blur p {
+    font-size: 28px;
+    color: white;
+    margin-top: 10px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+#container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#nav {
+    position: absolute;
+    top: 0;
+    list-style: none;
+    display: flex;
+    width: 100vw;
+    justify-content: space-between;
+}
+
+#nav>* {
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#nav p:not(#point) {
+    margin-left: 20px;
+    cursor: default;
+}
+
+#point {
+    font-size: 28px;
+}
+
+#leaderboard {
+    z-index: 1;
+    display: none;
+    list-style: none;
+    position: absolute;
+    top: 52px;
+    border: 1px solid;
+}
+
+#leaderboard li {
+    padding: 10px;
+    border: 1px solid;
+    margin: 5px;
+}
+
+#cut {
+    z-index: 1;
+}
