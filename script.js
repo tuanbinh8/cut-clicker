@@ -144,7 +144,7 @@ async function update() {
 leaderboardButton.onclick = async () => {
     leaderboardDis.style.display = leaderboardDis.style.display == 'block' ? 'none' : 'block'
     leaderboardDis.style.left = leaderboardButton.offsetLeft + 'px'
-    await update()
+    if (username) await update()
     await loadLeaderboard()
 }
 
