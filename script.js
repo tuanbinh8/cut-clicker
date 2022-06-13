@@ -1,4 +1,5 @@
 import { readData, writeData, updateData, readDataWhere, getAllData } from './firestore.js'
+import { advancements as allAdvancements } from './advancement.js'
 let cut = document.getElementById('cut')
 let point = 0
 let click = 0
@@ -9,10 +10,16 @@ let blur = document.getElementById('blur')
 let nameDis = document.getElementById('name')
 let leaderboardButton = document.getElementById('_leaderboard')
 let leaderboardDis = document.getElementById('leaderboard')
+let advancementButton = document.getElementById('_advancement')
+let advancementDis = document.getElementById('advancement-list')
 let regButton = document.getElementById('reg')
 let logButton = document.getElementById('log')
 let signOutButton = document.getElementById('sign-out')
+let advancementBox = document.getElementById('advancement')
+let advancementImg = document.querySelector('#advancement img')
+let advancementNameDis = document.querySelector('#advancement .name')
 let username
+let advancements = []
 
 async function sync() {
     blur.style.display = 'flex'
@@ -24,6 +31,7 @@ async function sync() {
         nameDis.innerText = username
         point = data[0].point
         pointDis.innerText = 'Cut: ' + point
+        advancements = data[0].advancements
         regButton.remove()
         logButton.remove()
         signOutButton.style.display = 'block'
@@ -58,7 +66,7 @@ cut.onclick = () => {
     img.width = 75
     img.style.position = 'absolute'
     img.style.top = 0
-    img.src = 'cut.png'
+    img.src = 'img/cut.png'
     let left = Math.random() * (window.innerWidth - img.width)
     img.style.left = left + 'px'
     document.body.appendChild(img)
@@ -71,6 +79,7 @@ cut.onclick = () => {
         })
     }
 
+    if (point == 1) getAdvancement(0)
 }
 
 regButton.onclick = async () => {
@@ -112,9 +121,11 @@ async function register(name, pass) {
     await writeData(name, {
         name,
         pass,
-        point: 0,
+        point,
         token,
+        advancements: [],
     })
+    await logIn(name, pass)
 }
 
 async function logIn(name, pass) {
@@ -132,20 +143,26 @@ function signOut() {
     localStorage.removeItem('token')
     location.reload()
 }
-window.onunload = async () => {
+
+setInterval(async () => {
     if (username) await update()
-}
+}, 60000)
+
 document.onvisibilitychange = async () => {
     if (username) await update()
 }
 
 async function update() {
-    await updateData(username, { point, })
+    await updateData(username, {
+        point,
+        advancements,
+    })
 }
 
 leaderboardButton.onclick = async () => {
     if (username) await update()
-    if (leaderboardDis.style.display == 'block') leaderboardDis.style.display = 'none'
+    if (leaderboardDis.style.display == 'block')
+        leaderboardDis.style.display = 'none'
     else {
         await loadLeaderboard()
         leaderboardDis.style.display = 'block'
@@ -169,3 +186,54 @@ async function loadLeaderboard() {
         leaderboardDis.innerHTML += `<li>(${userPlace + 1}) ${allUsers[userPlace].name}: ${allUsers[userPlace].point}💩</li>`
     }
 }
+// setInterval(() => { cut.click() }, 45)
+
+advancementButton.onclick = () => {
+    if (advancementDis.style.display == 'block')
+        advancementDis.style.display = 'none'
+    else {
+        loadAdvancement()
+        advancementDis.style.display = 'block'
+    }
+}
+function loadAdvancement() {
+    advancementDis.innerHTML = ''
+    advancements.map(id => {
+        let advancement = allAdvancements[id]
+        advancementDis.innerHTML += `<li>
+        <div>
+        <img src='${advancement.img}'>
+        <p>${advancement.name}</p>
+        </div>
+        <p class='description'>${advancement.description}</p>
+        </li>`
+    })
+}
+function getAdvancement(id) {
+    if (advancements.indexOf(id) > -1) return
+    advancements.push(id)
+    loadAdvancement()
+    let advancement = allAdvancements[id]
+    advancementImg.src = advancement.img
+    advancementNameDis.innerText = advancement.name
+    advancementBox.style.zIndex = 3
+    animate()
+    function animate() {
+        requestAnimationFrame(() => {
+            advancementBox.style.opacity = Number(advancementBox.style.opacity) + 0.05
+            if (Number(advancementBox.style.opacity) < 1) animate()
+        })
+    }
+    setTimeout(() => {
+        animate1()
+        advancementBox.style.zIndex = -1
+    }, 3000)
+    function animate1() {
+        requestAnimationFrame(() => {
+            advancementBox.style.opacity = Number(advancementBox.style.opacity) - 0.05
+            if (Number(advancementBox.style.opacity) > 0) animate1()
+        })
+    }
+}
+
+getAdvancement(1)
