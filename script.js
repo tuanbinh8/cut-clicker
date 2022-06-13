@@ -2,8 +2,9 @@ import { readData, writeData, updateData, readDataWhere, getAllData } from './fi
 let cut = document.getElementById('cut')
 let point = 0
 let click = 0
-let cpsDis = document.getElementById('cps')
 let pointDis = document.getElementById('point')
+let cpsDis = document.getElementById('cps')
+let stupidWarning = document.getElementById('stupid-warning')
 let blur = document.getElementById('blur')
 let nameDis = document.getElementById('name')
 let leaderboardButton = document.getElementById('_leaderboard')
@@ -15,6 +16,7 @@ let username
 
 async function sync() {
     blur.style.display = 'flex'
+    stupidWarning.remove()
     let data = await readDataWhere('token', '==', localStorage.token)
     if (!data.length) signOut()
     else {
@@ -22,10 +24,10 @@ async function sync() {
         nameDis.innerText = username
         point = data[0].point
         pointDis.innerText = 'Cut: ' + point
-        regButton.style.display = 'none'
-        logButton.style.display = 'none'
+        regButton.remove()
+        logButton.remove()
         signOutButton.style.display = 'block'
-        blur.style.display = 'none'
+        blur.remove()
     }
 }
 
@@ -142,10 +144,12 @@ async function update() {
 }
 
 leaderboardButton.onclick = async () => {
-    leaderboardDis.style.display = leaderboardDis.style.display == 'block' ? 'none' : 'block'
-    leaderboardDis.style.left = leaderboardButton.offsetLeft + 'px'
     if (username) await update()
-    await loadLeaderboard()
+    if (leaderboardDis.style.display == 'block') leaderboardDis.style.display = 'none'
+    else {
+        await loadLeaderboard()
+        leaderboardDis.style.display = 'block'
+    }
 }
 
 async function loadLeaderboard() {
@@ -155,6 +159,7 @@ async function loadLeaderboard() {
     let userPlace = allUsers.findIndex(user => user.name == username)
     for (let i = 0; i <= 9; i++) {
         let user = allUsers[i]
+        if (!user) break
         if (userPlace == i)
             leaderboardDis.innerHTML += `<li><b>(${userPlace + 1}) ${allUsers[userPlace].name}: ${allUsers[userPlace].point}💩</b></li>`
         else

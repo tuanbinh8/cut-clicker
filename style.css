@@ -79,11 +79,13 @@
 }
 
 #leaderboard {
+    background-color: white;
     z-index: 1;
     display: none;
     list-style: none;
     position: absolute;
-    top: 52px;
+    margin-top: 10px;
+    right: 0;
     border: 1px solid;
 }
 
@@ -91,6 +93,18 @@
     padding: 10px;
     border: 1px solid;
     margin: 5px;
+}
+
+#leaderboard li:nth-child(1) {
+    background-color: #FFD700;
+}
+
+#leaderboard li:nth-child(2) {
+    background-color: #C0C0C0;
+}
+
+#leaderboard li:nth-child(3) {
+    background-color: #CD7F32;
 }
 
 #cut {

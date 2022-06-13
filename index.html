@@ -12,19 +12,25 @@
 <body>
     <div id="nav">
         <div>
-            <b><p id="point">Cut: 0</p></b>
+            <b>
+                <p id="point">Cut: 0</p>
+            </b>
             <p id="cps">CPS: 0</p>
+            <p id="stupid-warning">(Log in to save your progress)</p>
         </div>
         <div>
-            <b><p id="name"></p></b>
-            <p id="_leaderboard">Leaderboard</p>
+            <b>
+                <p id="name"></p>
+            </b>
+            <div style="position:relative;">
+                <p id="_leaderboard">Leaderboard</p>
+                <ul id="leaderboard"></ul>
+            </div>
             <p id="reg">Register</p>
             <p id="log">Log in</p>
             <p id="sign-out" style="display: none;">Sign out</p>
         </div>
     </div>
-    <ul id="leaderboard">
-    </ul>
     <div id="container">
         <img id="cut" src="cut.png" alt="cut" width="225">
     </div>
