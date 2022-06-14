@@ -54,7 +54,7 @@ setInterval(() => {
     click = 0
 }, 1000)
 
-animationCheckbox.checked = JSON.parse(localStorage.animation) || true 
+animationCheckbox.checked = localStorage.animation ? JSON.parse(localStorage.animation) : true 
 
 animationCheckbox.onchange = () => {
     localStorage.animation = animationCheckbox.checked
