@@ -80,6 +80,7 @@ cut.onclick = () => {
     }
 
     if (point == 1) getAdvancement(0)
+    if (point == 1000) getAdvancement(4)
 }
 
 regButton.onclick = async () => {
