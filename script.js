@@ -15,9 +15,7 @@ let advancementDis = document.getElementById('advancement-list')
 let regButton = document.getElementById('reg')
 let logButton = document.getElementById('log')
 let signOutButton = document.getElementById('sign-out')
-let advancementBox = document.getElementById('advancement')
-let advancementImg = document.querySelector('#advancement img')
-let advancementNameDis = document.querySelector('#advancement .name')
+let advancementContainer = document.getElementById('advancement-container')
 let username
 let advancements = []
 
@@ -47,6 +45,7 @@ setInterval(() => {
         point = 0
         alert('Your point was reset for cheating')
         update()
+        getAdvancement(3)
     }
     click = 0
 }, 1000)
@@ -162,7 +161,7 @@ async function update() {
 }
 
 leaderboardButton.onclick = async () => {
-   await update()
+    await update()
     if (leaderboardDis.style.display == 'block')
         leaderboardDis.style.display = 'none'
     else {
@@ -223,9 +222,17 @@ function getAdvancement(id) {
     advancements.push(id)
     loadAdvancement()
     let advancement = allAdvancements[id]
-    advancementImg.src = advancement.img
-    advancementNameDis.innerText = advancement.name
+    let advancementBox = document.createElement('div')
+    advancementBox.className = 'advancement'
     advancementBox.style.zIndex = 3
+    advancementBox.innerHTML = `<div>
+    <img src="${advancement.img}" alt="">
+</div>
+<div>
+    <p style="color: yellow;">Achivement made!</p>
+    <p>${advancement.name}</p>
+</div>`
+    advancementContainer.appendChild(advancementBox)
     animate()
     function animate() {
         requestAnimationFrame(() => {
@@ -235,14 +242,14 @@ function getAdvancement(id) {
     }
     setTimeout(() => {
         animate1()
-        advancementBox.style.zIndex = -1
     }, 3000)
     function animate1() {
         requestAnimationFrame(() => {
             advancementBox.style.opacity = Number(advancementBox.style.opacity) - 0.05
             if (Number(advancementBox.style.opacity) > 0) animate1()
+            else advancementBox.remove()
         })
     }
 }
-
+getAdvancement(2)
 // setInterval(()=>{cut.click()},45)

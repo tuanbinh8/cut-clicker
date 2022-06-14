@@ -111,12 +111,10 @@
     z-index: 1;
 }
 
-#advancement {
+#advancement-container {
     position: absolute;
     top: 0;
-    right: 0;
-    opacity: 0;
-    z-index: -1;
+    right: 0
 }
 
 .advancement {
@@ -140,7 +138,7 @@
     height: 40px;
 }
 
-#advancement p {
+.advancement p {
     margin-bottom: 5px;
     font-size: 20px;
 }
@@ -153,12 +151,12 @@
     right: 0;
 }
 
-#advancement-list .advancement {
+.advancement {
     position: relative;
     margin-top: 5px;
 }
 
-#advancement-list .advancement:nth-child(1) {
+.advancement:nth-child(1) {
     margin-top: 0;
 }
 

@@ -14,7 +14,12 @@ let advancements =
             name: 'Become the King',
             img: 'img/crown.png',
             description: 'Get in top 1',
-        }
+        },
+        {
+            name: 'Cheater',
+            img: 'img/cheat.jpg',
+            description: 'Have your point reset for cheating',
+        },
     ]
 
 export { advancements }
