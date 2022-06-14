@@ -7,6 +7,7 @@ let click = 0
 let pointDis = document.getElementById('point')
 let cpsDis = document.getElementById('cps')
 let stupidWarning = document.getElementById('stupid-warning')
+let animationCheckbox = document.getElementById('animation')
 let blur = document.getElementById('blur')
 let nameDis = document.getElementById('name')
 let leaderboardButton = document.getElementById('_leaderboard')
@@ -53,34 +54,44 @@ setInterval(() => {
     click = 0
 }, 1000)
 
+animationCheckbox.checked = JSON.parse(localStorage.animation)
+
+animationCheckbox.onchange = () => {
+    localStorage.animation = animationCheckbox.checked
+}
+
 cut.onclick = () => {
     if (!clickable) return
     click++
     point++
     pointDis.innerText = 'Cut: ' + point
-    cut.width = 250
-    animate()
-    function animate() {
-        requestAnimationFrame(() => {
-            cut.width -= 2
-            if (cut.width > 225) animate()
-        })
+    if (animationCheckbox.checked) {
+        cut.width = 250
+        animate()
+        function animate() {
+            requestAnimationFrame(() => {
+                cut.width -= 2
+                if (cut.width > 225) animate()
+            })
+        }
     }
-    let img = document.createElement('img')
-    img.width = 75
-    img.style.position = 'absolute'
-    img.style.top = 0
-    img.src = 'img/cut.png'
-    let left = Math.random() * (window.innerWidth - img.width)
-    img.style.left = left + 'px'
-    document.body.appendChild(img)
-    animate1()
-    function animate1() {
-        requestAnimationFrame(() => {
-            img.style.top = (img.offsetTop + 5) + 'px'
-            if (img.offsetTop < (window.innerHeight - img.width)) animate1()
-            else img.remove()
-        })
+    if (animationCheckbox.checked) {
+        let img = document.createElement('img')
+        img.width = 75
+        img.style.position = 'absolute'
+        img.style.top = 0
+        img.src = 'img/cut.png'
+        let left = Math.random() * (window.innerWidth - img.width)
+        img.style.left = left + 'px'
+        document.body.appendChild(img)
+        animate1()
+        function animate1() {
+            requestAnimationFrame(() => {
+                img.style.top = (img.offsetTop + 5) + 'px'
+                if (img.offsetTop < (window.innerHeight - img.width)) animate1()
+                else img.remove()
+            })
+        }
     }
 
     if (point == 1) getAdvancement(0)
@@ -231,31 +242,36 @@ function getAdvancement(id) {
     let advancement = allAdvancements[id]
     let advancementBox = document.createElement('div')
     advancementBox.className = 'advancement'
-    advancementBox.style.zIndex = 3
     advancementBox.innerHTML = `<div>
     <img src="${advancement.img}" alt="">
 </div>
 <div>
-    <p style="color: yellow;">Achivement made!</p>
+    <p style="color: yellow;">Advancenent made!</p>
     <p>${advancement.name}</p>
 </div>`
     advancementContainer.appendChild(advancementBox)
-    animate()
-    function animate() {
-        requestAnimationFrame(() => {
-            advancementBox.style.opacity = Number(advancementBox.style.opacity) + 0.05
-            if (Number(advancementBox.style.opacity) < 1) animate()
-        })
-    }
-    setTimeout(() => {
-        animate1()
-    }, 3000)
-    function animate1() {
-        requestAnimationFrame(() => {
-            advancementBox.style.opacity = Number(advancementBox.style.opacity) - 0.05
-            if (Number(advancementBox.style.opacity) > 0) animate1()
-            else advancementBox.remove()
-        })
+    if (animationCheckbox.checked) {
+        animate()
+        function animate() {
+            requestAnimationFrame(() => {
+                advancementBox.style.opacity = Number(advancementBox.style.opacity) + 0.05
+                if (Number(advancementBox.style.opacity) < 1) animate()
+            })
+        }
+        setTimeout(() => {
+            animate1()
+        }, 3000)
+        function animate1() {
+            requestAnimationFrame(() => {
+                advancementBox.style.opacity = Number(advancementBox.style.opacity) - 0.05
+                if (Number(advancementBox.style.opacity) > 0) animate1()
+                else advancementBox.remove()
+            })
+        }
+    } else {
+        setTimeout(() => {
+            advancementBox.remove()
+        }, 3000)
     }
 }
 
