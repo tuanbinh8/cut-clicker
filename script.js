@@ -146,14 +146,15 @@ function signOut() {
 }
 
 setInterval(async () => {
-    if (username) await update()
+    await update()
 }, 60000)
 
 document.onvisibilitychange = async () => {
-    if (username) await update()
+    await update()
 }
 
 async function update() {
+    if (!username) return
     await updateData(username, {
         point,
         advancements,
@@ -161,7 +162,7 @@ async function update() {
 }
 
 leaderboardButton.onclick = async () => {
-    if (username) await update()
+   await update()
     if (leaderboardDis.style.display == 'block')
         leaderboardDis.style.display = 'none'
     else {
@@ -185,6 +186,9 @@ async function loadLeaderboard() {
     }
     if (userPlace > 9) {
         leaderboardDis.innerHTML += `<li>(${userPlace + 1}) ${allUsers[userPlace].name}: ${allUsers[userPlace].point}💩</li>`
+    }
+    if (userPlace == 0) {
+        getAdvancement(2)
     }
 }
 // setInterval(() => { cut.click() }, 45)
@@ -240,6 +244,5 @@ function getAdvancement(id) {
         })
     }
 }
-getAdvancement(0)
-getAdvancement(1)
-getAdvancement(2)
+
+// setInterval(()=>{cut.click()},45)
