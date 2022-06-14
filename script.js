@@ -217,7 +217,7 @@ function loadAdvancement() {
                 <img src="${advancement.img}" alt="">
             </div>
             <div>
-                <p style="color: yellow;">Achivement made!</p>
+                <p style="color: yellow;">Advancement made!</p>
                 <p>${advancement.name}</p>
             </div>
             <p class='description'>${advancement.description}</p>
