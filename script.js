@@ -2,6 +2,7 @@ import { readData, writeData, updateData, readDataWhere, getAllData } from './fi
 import { advancements as allAdvancements } from './advancement.js'
 let cut = document.getElementById('cut')
 let point = 0
+let clickable = true
 let click = 0
 let pointDis = document.getElementById('point')
 let cpsDis = document.getElementById('cps')
@@ -20,6 +21,7 @@ let username
 let advancements = []
 
 async function sync() {
+    clickable = false
     blur.style.display = 'flex'
     stupidWarning.remove()
     let data = await readDataWhere('token', '==', localStorage.token)
@@ -34,6 +36,7 @@ async function sync() {
         logButton.remove()
         signOutButton.style.display = 'block'
         blur.remove()
+        clickable = true
     }
 }
 
@@ -51,6 +54,7 @@ setInterval(() => {
 }, 1000)
 
 cut.onclick = () => {
+    if (!clickable) return
     click++
     point++
     pointDis.innerText = 'Cut: ' + point
@@ -81,6 +85,8 @@ cut.onclick = () => {
 
     if (point == 1) getAdvancement(0)
     if (point == 1000) getAdvancement(4)
+    if (point == 1000000) getAdvancement(5)
+    if (point == 1000000000) getAdvancement(6)
 }
 
 regButton.onclick = async () => {

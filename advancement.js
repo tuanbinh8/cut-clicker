@@ -25,6 +25,16 @@ let advancements =
             img: 'img/1000.png',
             description: 'Reach 1000 cut',
         },
+        {
+            name: 'Crazy \'bout cut',
+            img: 'img/crazy.png',
+            description: 'Reach 1000000 cut',
+        },
+        {
+            name: 'Cut billionaire',
+            img: 'img/elon.png',
+            description: 'Reach 1000000000 cut',
+        },
     ]
 
 export { advancements }
