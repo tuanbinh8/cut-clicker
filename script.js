@@ -46,6 +46,7 @@ setInterval(() => {
     if (click >= 25) {
         point = 0
         alert('Your point was reset for cheating')
+        update()
     }
     click = 0
 }, 1000)
@@ -198,6 +199,7 @@ advancementButton.onclick = () => {
 }
 function loadAdvancement() {
     advancementDis.innerHTML = ''
+    if (!advancements.length) advancementDis.innerHTML = 'No advancement made!'
     advancements.map(id => {
         let advancement = allAdvancements[id]
         advancementDis.innerHTML += `<div class='advancement'>
@@ -208,6 +210,7 @@ function loadAdvancement() {
                 <p style="color: yellow;">Achivement made!</p>
                 <p>${advancement.name}</p>
             </div>
+            <p class='description'>${advancement.description}</p>
         </div>`
     })
 }
@@ -237,3 +240,6 @@ function getAdvancement(id) {
         })
     }
 }
+getAdvancement(0)
+getAdvancement(1)
+getAdvancement(2)

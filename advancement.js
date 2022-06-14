@@ -9,6 +9,11 @@ let advancements =
             name: 'Can\'t count more cut',
             img: 'img/infinite.png',
             description: 'Get infinite cut',
+        },
+        {
+            name: 'Become the King',
+            img: 'img/crown.png',
+            description: 'Get in top 1',
         }
     ]
 
