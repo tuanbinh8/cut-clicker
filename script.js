@@ -251,5 +251,5 @@ function getAdvancement(id) {
         })
     }
 }
-getAdvancement(2)
+
 // setInterval(()=>{cut.click()},45)
