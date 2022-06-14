@@ -200,13 +200,15 @@ function loadAdvancement() {
     advancementDis.innerHTML = ''
     advancements.map(id => {
         let advancement = allAdvancements[id]
-        advancementDis.innerHTML += `<li>
-        <div>
-        <img src='${advancement.img}'>
-        <p>${advancement.name}</p>
-        </div>
-        <p class='description'>${advancement.description}</p>
-        </li>`
+        advancementDis.innerHTML += `<div class='advancement'>
+            <div>
+                <img src="${advancement.img}" alt="">
+            </div>
+            <div>
+                <p style="color: yellow;">Achivement made!</p>
+                <p>${advancement.name}</p>
+            </div>
+        </div>`
     })
 }
 function getAdvancement(id) {
@@ -235,5 +237,3 @@ function getAdvancement(id) {
         })
     }
 }
-
-getAdvancement(1)
