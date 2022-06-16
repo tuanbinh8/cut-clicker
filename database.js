@@ -51,4 +51,11 @@ function updateData(name, data) {
     update(ref(db, 'users/' + name), data);
 }
 
-export { readData, readAllData, readDataWhere, writeData, updateData }
+function changeListener(cb) {
+    const _ref = ref(db, 'users');
+    onValue(_ref, (snapshot) => {
+        cb(snapshot.val())
+    });
+}
+
+export { readData, readAllData, readDataWhere, writeData, updateData, changeListener }

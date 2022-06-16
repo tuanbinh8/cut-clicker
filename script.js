@@ -1,4 +1,4 @@
-import { readData, readAllData, readDataWhere, writeData, updateData } from './database.js'
+import { readData, readAllData, readDataWhere, writeData, updateData, changeListener } from './database.js'
 import { advancements as allAdvancements } from './advancement.js'
 let cut = document.getElementById('cut')
 let point = 0
@@ -38,10 +38,12 @@ async function sync() {
         signOutButton.style.display = 'block'
         blur.remove()
         clickable = true
+        changeListener(loadLeaderboard)
     }
 }
 
 if (localStorage.token) sync()
+else changeListener(loadLeaderboard)
 
 setInterval(() => {
     cpsDis.innerText = 'CPS: ' + click
@@ -99,6 +101,7 @@ cut.onclick = () => {
     if (point == 1000000) getAdvancement(5)
     if (point == 1000000000) getAdvancement(6)
     if (point == Infinity) getAdvancement(1)
+    update()
 }
 
 regButton.onclick = async () => {
@@ -163,14 +166,6 @@ function signOut() {
     location.reload()
 }
 
-setInterval(async () => {
-    update()
-}, 60000)
-
-document.onvisibilitychange = async () => {
-    update()
-}
-
 function update() {
     if (!username) return
     updateData(username, {
@@ -178,14 +173,12 @@ function update() {
         advancements: Object.assign({}, advancements),
     })
 }
+
 leaderboardButton.onclick = async () => {
-    update()
     if (leaderboardDis.style.display == 'block')
         leaderboardDis.style.display = 'none'
-    else {
-        await loadLeaderboard()
+    else
         leaderboardDis.style.display = 'block'
-    }
 }
 
 async function loadLeaderboard() {
@@ -239,6 +232,7 @@ function loadAdvancement() {
 function getAdvancement(id) {
     if (advancements.indexOf(id) > -1) return
     advancements.push(id)
+    update()
     loadAdvancement()
     let advancement = allAdvancements[id]
     let advancementBox = document.createElement('div')
