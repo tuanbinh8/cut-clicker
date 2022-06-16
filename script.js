@@ -1,4 +1,4 @@
-import { readData, writeData, updateData, readDataWhere, getAllData } from './firestore.js'
+import { readData, readAllData, readDataWhere, writeData, updateData } from './database.js'
 import { advancements as allAdvancements } from './advancement.js'
 let cut = document.getElementById('cut')
 let point = 0
@@ -25,14 +25,14 @@ async function sync() {
     clickable = false
     blur.style.display = 'flex'
     stupidWarning.remove()
-    let data = await readDataWhere('token', '==', localStorage.token)
-    if (!data.length) signOut()
+    let data = await readDataWhere('token', localStorage.token)
+    if (!data) signOut()
     else {
-        username = data[0].name
+        username = data.name
         nameDis.innerText = username
-        point = data[0].point
+        point = data.point
         pointDis.innerText = 'Cut: ' + point
-        advancements = data[0].advancements
+        advancements = Object.values(data.advancements || {})
         regButton.remove()
         logButton.remove()
         signOutButton.style.display = 'block'
@@ -54,7 +54,7 @@ setInterval(() => {
     click = 0
 }, 1000)
 
-animationCheckbox.checked = localStorage.animation ? JSON.parse(localStorage.animation) : true 
+animationCheckbox.checked = localStorage.animation ? JSON.parse(localStorage.animation) : true
 
 animationCheckbox.onchange = () => {
     localStorage.animation = animationCheckbox.checked
@@ -98,11 +98,12 @@ cut.onclick = () => {
     if (point == 1000) getAdvancement(4)
     if (point == 1000000) getAdvancement(5)
     if (point == 1000000000) getAdvancement(6)
+    if (point == Infinity) getAdvancement(1)
 }
 
 regButton.onclick = async () => {
     let name = prompt('Create an username:')
-    if ((await readDataWhere('name', '==', name)).length) {
+    if (await readDataWhere('name', name)) {
         alert('This username has already been used')
         return
     }
@@ -128,7 +129,7 @@ async function register(name, pass) {
     let token
     do {
         token = genToken()
-    } while (await readDataWhere('token', '==', token).length)
+    } while (await readDataWhere('token', token).length)
     function genToken() {
         function rand() {
             return Math.random().toString(36).substr(2); // remove `0.`
@@ -136,12 +137,12 @@ async function register(name, pass) {
         return rand() + rand(); // to make it longer
     }
 
-    await writeData(name, {
+    writeData(name, {
         name,
         pass,
         point,
         token,
-        advancements: [],
+        advancements: Object.assign({}, advancements),
     })
     await logIn(name, pass)
 }
@@ -163,23 +164,22 @@ function signOut() {
 }
 
 setInterval(async () => {
-    await update()
+    update()
 }, 60000)
 
 document.onvisibilitychange = async () => {
-    await update()
+    update()
 }
 
-async function update() {
+function update() {
     if (!username) return
-    await updateData(username, {
+    updateData(username, {
         point,
-        advancements,
+        advancements: Object.assign({}, advancements),
     })
 }
-
 leaderboardButton.onclick = async () => {
-    await update()
+    update()
     if (leaderboardDis.style.display == 'block')
         leaderboardDis.style.display = 'none'
     else {
@@ -190,7 +190,7 @@ leaderboardButton.onclick = async () => {
 
 async function loadLeaderboard() {
     leaderboardDis.innerHTML = ''
-    let allUsers = await getAllData()
+    let allUsers = Object.values(await readAllData())
     allUsers.sort(function (a, b) { return b.point - a.point });
     let userPlace = allUsers.findIndex(user => user.name == username)
     for (let i = 0; i <= 9; i++) {
@@ -208,7 +208,6 @@ async function loadLeaderboard() {
         getAdvancement(2)
     }
 }
-// setInterval(() => { cut.click() }, 45)
 
 advancementButton.onclick = () => {
     if (advancementDis.style.display == 'block')
@@ -218,6 +217,7 @@ advancementButton.onclick = () => {
         advancementDis.style.display = 'block'
     }
 }
+
 function loadAdvancement() {
     advancementDis.innerHTML = ''
     if (!advancements.length) advancementDis.innerHTML = 'No advancement made!'
@@ -235,6 +235,7 @@ function loadAdvancement() {
         </div>`
     })
 }
+
 function getAdvancement(id) {
     if (advancements.indexOf(id) > -1) return
     advancements.push(id)
@@ -274,5 +275,3 @@ function getAdvancement(id) {
         }, 3000)
     }
 }
-
-// setInterval(()=>{cut.click()},45)
