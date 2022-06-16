@@ -190,7 +190,7 @@ async function loadLeaderboard() {
         let user = allUsers[i]
         if (!user) break
         if (userPlace == i)
-            leaderboardDis.innerHTML += `<li><b>(${userPlace + 1}) ${allUsers[userPlace].name}: ${allUsers[userPlace].point}💩</b></li>`
+            leaderboardDis.innerHTML += `<li><b>(${i + 1}) ${user.name}: ${user.point}💩</b></li>`
         else
             leaderboardDis.innerHTML += `<li>(${i + 1}) ${user.name}: ${user.point}💩</li>`
     }
