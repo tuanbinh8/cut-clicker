@@ -30,7 +30,7 @@ async function sync() {
     else {
         username = data.name
         nameDis.innerText = username
-        point = data.point
+        point = data.point == 'Infinity' ? Infinity : data.point
         pointDis.innerText = 'Cut: ' + point
         advancements = Object.values(data.advancements || {})
         regButton.remove()
@@ -168,10 +168,11 @@ function signOut() {
 
 function update() {
     if (!username) return
-    updateData(username, {
-        point,
+    let updates = {
         advancements: Object.assign({}, advancements),
-    })
+    }
+    updates.point = point == Infinity ? 'Infinity' : point
+    updateData(username, updates)
 }
 
 leaderboardButton.onclick = async () => {
@@ -186,7 +187,7 @@ async function loadLeaderboard() {
     let allUsers = Object.values(await readAllData())
     allUsers.sort(function (a, b) { return b.point - a.point });
     let userPlace = allUsers.findIndex(user => user.name == username)
-    for (let i = 0; i <= 9; i++) {
+    for (let i = 0; i <= 4; i++) {
         let user = allUsers[i]
         if (!user) break
         if (userPlace == i)
@@ -194,8 +195,9 @@ async function loadLeaderboard() {
         else
             leaderboardDis.innerHTML += `<li>(${i + 1}) ${user.name}: ${user.point}💩</li>`
     }
-    if (userPlace > 9) {
-        leaderboardDis.innerHTML += `<li>(${userPlace + 1}) ${allUsers[userPlace].name}: ${allUsers[userPlace].point}💩</li>`
+    if (userPlace > 4) {
+        let user = allUsers[userPlace]
+        leaderboardDis.innerHTML += `<li><b>(${userPlace + 1}) ${user.name}: ${user.point}💩</b></li>`
     }
     if (userPlace == 0) {
         getAdvancement(2)
