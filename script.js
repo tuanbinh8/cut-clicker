@@ -199,6 +199,7 @@ async function loadLeaderboard() {
         let user = allUsers[userPlace]
         leaderboardDis.innerHTML += `<li><b>(${userPlace + 1}) ${user.name}: ${user.point}💩</b></li>`
     }
+    leaderboardDis.innerHTML += `<a href='leaderboard' target='_blank'>Entire Leaderboard</a>`
     if (userPlace == 0) {
         getAdvancement(2)
     }
