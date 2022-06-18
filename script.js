@@ -233,6 +233,8 @@ function loadAdvancement() {
 }
 
 function getAdvancement(id) {
+    let fart = new Audio('fart.mp3')
+    fart.play()
     if (advancements.indexOf(id) > -1) return
     advancements.push(id)
     update()
