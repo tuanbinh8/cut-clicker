@@ -1,12 +1,13 @@
-import { readAllData, readDataWhere, changeListener } from '/database.js'
+import { readAllData, readDataWhere, changeListener } from '../database.js'
 let username
 let leaderboardDis = document.getElementById('leaderboard')
-async function init() {
+async function sync() {
     let data = await readDataWhere('token', localStorage.token)
     username = data.name
     changeListener(loadLeaderboard)
 }
-init()
+if (localStorage.token) sync()
+else changeListener(loadLeaderboard)
 async function loadLeaderboard() {
     leaderboardDis.innerHTML = ''
     let allUsers = Object.values(await readAllData())
