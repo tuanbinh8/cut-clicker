@@ -10,6 +10,11 @@ let stupidWarning = document.getElementById('stupid-warning')
 let animationCheckbox = document.getElementById('animation')
 let blur = document.getElementById('blur')
 let nameDis = document.getElementById('name')
+let _chatButton = document.getElementById('_chat')
+let chatContainer = document.getElementById('chat-container')
+let chatbox = document.getElementById('chatbox')
+let chatInput = document.querySelector('#chat-container input')
+let chatForm = document.getElementById('chat-form')
 let leaderboardButton = document.getElementById('_leaderboard')
 let leaderboardDis = document.getElementById('leaderboard')
 let advancementButton = document.getElementById('_advancement')
@@ -25,7 +30,7 @@ async function sync() {
     clickable = false
     blur.style.display = 'flex'
     stupidWarning.remove()
-    let data = await readDataWhere('token', localStorage.token)
+    let data = await readDataWhere('users', 'token', localStorage.token)
     if (!data) signOut()
     else {
         username = data.name
@@ -36,19 +41,26 @@ async function sync() {
         regButton.remove()
         logButton.remove()
         signOutButton.style.display = 'block'
+        
         blur.remove()
         clickable = true
-        changeListener(loadLeaderboard)
     }
 }
 
-if (localStorage.token) sync()
-else changeListener(loadLeaderboard)
+if (localStorage.token) {
+    sync()
+    changeListener('users', loadLeaderboard)
+    changeListener('chat', loadChatbox)
+} else {
+    changeListener('users', loadLeaderboard)
+    changeListener('chat', loadChatbox)
+}
 
 setInterval(() => {
     cpsDis.innerText = 'CPS: ' + click
     if (click >= 25) {
         point = 0
+        pointDis.innerText = 'Cut: ' + point
         alert('Your point was reset for cheating')
         update()
         getAdvancement(3)
@@ -106,7 +118,7 @@ cut.onclick = () => {
 
 regButton.onclick = async () => {
     let name = prompt('Create an username:')
-    if (await readDataWhere('name', name)) {
+    if (await readDataWhere('users', 'name', name)) {
         alert('This username has already been used')
         return
     }
@@ -132,7 +144,7 @@ async function register(name, pass) {
     let token
     do {
         token = genToken()
-    } while (await readDataWhere('token', token).length)
+    } while (await readDataWhere('users', 'token', token).length)
     function genToken() {
         function rand() {
             return Math.random().toString(36).substr(2); // remove `0.`
@@ -140,7 +152,7 @@ async function register(name, pass) {
         return rand() + rand(); // to make it longer
     }
 
-    writeData(name, {
+    writeData('users' + name, {
         name,
         pass,
         point,
@@ -151,7 +163,7 @@ async function register(name, pass) {
 }
 
 async function logIn(name, pass) {
-    let data = await readData(name)
+    let data = await readData('users/' + name)
     if (pass !== data.pass) {
         alert('Invalid password or username')
         return
@@ -172,7 +184,7 @@ function update() {
         advancements: Object.assign({}, advancements),
     }
     updates.point = point == Infinity ? 'Infinity' : point
-    updateData(username, updates)
+    updateData('users' + username, updates)
 }
 
 leaderboardButton.onclick = async () => {
@@ -184,8 +196,8 @@ leaderboardButton.onclick = async () => {
 
 async function loadLeaderboard() {
     leaderboardDis.innerHTML = ''
-    let allUsers = Object.values(await readAllData())
-    allUsers.sort(function (a, b) { return b.point - a.point });
+    let allUsers = Object.values(await readAllData('users'))
+    allUsers.sort((a, b) => b.point - a.point);
     let userPlace = allUsers.findIndex(user => user.name == username)
     for (let i = 0; i <= 4; i++) {
         let user = allUsers[i]
@@ -273,4 +285,38 @@ function getAdvancement(id) {
             advancementBox.remove()
         }, 3000)
     }
+}
+
+_chatButton.onclick = () => {
+    if (chatContainer.style.display == 'block')
+        chatContainer.style.display = 'none'
+    else
+        chatContainer.style.display = 'block'
+}
+
+chatForm.onsubmit = async (e) => {
+    e.preventDefault()
+    if (!username) {
+        alert('You have to log in to enable chat feature')
+        return
+    }
+    let text = chatInput.value
+    let chatLength = await readData('chat/length')
+    updateData('chat', {
+        length: chatLength + 1,
+        [chatLength]: {
+            user: username,
+            text,
+        }
+    })
+    chatInput.value = ''
+}
+
+async function loadChatbox() {
+    chatbox.innerHTML = ''
+    let allChatData = Object.values(await readAllData('chat'))
+    allChatData.map(data => {
+        if (typeof data == 'object')
+            chatbox.innerHTML += `<li><b>${data.user}</b>: ${data.text}</li>`
+    })
 }

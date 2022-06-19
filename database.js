@@ -15,8 +15,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 let db = getDatabase()
 
-function readData(name) {
-    const _ref = ref(db, 'users/' + name);
+function readData(path) {
+    const _ref = ref(db, path);
     return new Promise((resolve, reject) => {
         onValue(_ref, (snapshot) => {
             resolve(snapshot.val())
@@ -24,16 +24,17 @@ function readData(name) {
     })
 }
 
-function readAllData() {
-    const _ref = ref(db, 'users/');
+function readAllData(path) {
+    const _ref = ref(db, path);
     return new Promise((resolve, reject) => {
         onValue(_ref, (snapshot) => {
             resolve(snapshot.val())
         });
     })
 }
-async function readDataWhere(property, value) {
-    let allData = await readAllData()
+
+async function readDataWhere(path, property, value) {
+    let allData = await readAllData(path)
     let result
     for (let data in allData) {
         if (allData[data][property] == value) {
@@ -43,16 +44,17 @@ async function readDataWhere(property, value) {
     }
     return result
 }
-function writeData(name, data) {
-    set(ref(db, 'users/' + name), data);
+
+function writeData(path, data) {
+    set(ref(db, path), data);
 }
 
-function updateData(name, data) {
-    update(ref(db, 'users/' + name), data);
+function updateData(path, data) {
+    update(ref(db, path), data);
 }
 
-function changeListener(cb) {
-    const _ref = ref(db, 'users');
+function changeListener(path, cb) {
+    const _ref = ref(db, path);
     onValue(_ref, (snapshot) => {
         cb(snapshot.val())
     });
