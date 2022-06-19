@@ -182,9 +182,9 @@ function update() {
     if (!username) return
     let updates = {
         advancements: Object.assign({}, advancements),
+        point: point == Infinity ? 'Infinity' : point,
     }
-    updates.point = point == Infinity ? 'Infinity' : point
-    updateData('users' + username, updates)
+    updateData('users/' + username, updates)
 }
 
 leaderboardButton.onclick = async () => {
