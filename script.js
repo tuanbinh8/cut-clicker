@@ -41,7 +41,6 @@ async function sync() {
         regButton.remove()
         logButton.remove()
         signOutButton.style.display = 'block'
-        
         blur.remove()
         clickable = true
     }
@@ -301,14 +300,16 @@ chatForm.onsubmit = async (e) => {
         return
     }
     let text = chatInput.value
+    if (!text.length) return
     let chatLength = await readData('chat/length')
-    updateData('chat', {
+    await updateData('chat', {
         length: chatLength + 1,
         [chatLength]: {
             user: username,
             text,
         }
     })
+    chatbox.scrollTop = chatbox.scrollHeight;
     chatInput.value = ''
 }
 

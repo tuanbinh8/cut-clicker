@@ -191,6 +191,8 @@
 }
 
 #chatbox {
+    height: 400px;
+    overflow: auto;
     list-style: none;
     border: 1px solid;
     padding: 5px;

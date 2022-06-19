@@ -49,8 +49,8 @@ function writeData(path, data) {
     set(ref(db, path), data);
 }
 
-function updateData(path, data) {
-    update(ref(db, path), data);
+async function updateData(path, data) {
+    await update(ref(db, path), data);
 }
 
 function changeListener(path, cb) {
