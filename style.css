@@ -187,7 +187,7 @@
 }
 
 #chat-container {
-    width: 210px;
+    width: 220px;
 }
 
 #chatbox {
@@ -201,6 +201,6 @@
     background-color: white;
 }
 
-#chat-container input {
+#chat-container input, #chat-container button {
     padding: 2px;
 }

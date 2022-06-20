@@ -289,14 +289,17 @@ function getAdvancement(id) {
 _chatButton.onclick = () => {
     if (chatContainer.style.display == 'block')
         chatContainer.style.display = 'none'
-    else
+    else {
         chatContainer.style.display = 'block'
+        chatbox.scrollTop = chatbox.scrollHeight;
+        chatInput.focus()
+    }
 }
 
 chatForm.onsubmit = async (e) => {
     e.preventDefault()
     if (!username) {
-        alert('You have to log in to enable chat feature')
+        alert('You must log in to enable chat feature')
         return
     }
     let text = chatInput.value
