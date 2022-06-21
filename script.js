@@ -25,6 +25,8 @@ let signOutButton = document.getElementById('sign-out')
 let advancementContainer = document.getElementById('advancement-container')
 let username
 let advancements = []
+let chatLength = await readData('chat/length')
+let viewedChat
 
 async function sync() {
     clickable = false
@@ -38,19 +40,25 @@ async function sync() {
         point = data.point == 'Infinity' ? Infinity : data.point
         pointDis.innerText = 'Cut: ' + point
         advancements = Object.values(data.advancements || {})
+        viewedChat = data.viewedChat
         regButton.remove()
         logButton.remove()
         signOutButton.style.display = 'block'
         blur.remove()
         clickable = true
+        changeListener('users', () => {
+            loadLeaderboard()
+            if (chatLength - viewedChat)
+                _chatButton.innerHTML = `Chat (${chatLength - viewedChat})`
+            else
+                _chatButton.innerHTML = `Chat`
+        })
+        changeListener('chat', loadChatbox)
     }
 }
 
-if (localStorage.token) {
-    sync()
-    changeListener('users', loadLeaderboard)
-    changeListener('chat', loadChatbox)
-} else {
+if (localStorage.token) sync()
+else {
     changeListener('users', loadLeaderboard)
     changeListener('chat', loadChatbox)
 }
@@ -182,6 +190,7 @@ function update() {
     let updates = {
         advancements: Object.assign({}, advancements),
         point: point == Infinity ? 'Infinity' : point,
+        viewedChat,
     }
     updateData('users/' + username, updates)
 }
@@ -293,6 +302,8 @@ _chatButton.onclick = () => {
         chatContainer.style.display = 'block'
         chatbox.scrollTop = chatbox.scrollHeight;
         chatInput.focus()
+        viewedChat = chatLength
+        update()
     }
 }
 
@@ -304,7 +315,6 @@ chatForm.onsubmit = async (e) => {
     }
     let text = chatInput.value
     if (!text.length) return
-    let chatLength = await readData('chat/length')
     await updateData('chat', {
         length: chatLength + 1,
         [chatLength]: {
@@ -317,6 +327,10 @@ chatForm.onsubmit = async (e) => {
 }
 
 async function loadChatbox() {
+    chatLength = await readData('chat/length')
+    if (chatContainer.style.display == 'block')
+        viewedChat = chatLength
+    update()
     chatbox.innerHTML = ''
     let allChatData = Object.values(await readAllData('chat'))
     allChatData.map(data => {
