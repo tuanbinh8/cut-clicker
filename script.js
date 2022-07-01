@@ -198,8 +198,9 @@ function update() {
 leaderboardButton.onclick = async () => {
     if (leaderboardDis.style.display == 'block')
         leaderboardDis.style.display = 'none'
-    else
-        leaderboardDis.style.display = 'block'
+    else {
+        displayNavbox(leaderboardDis)
+    }
 }
 
 async function loadLeaderboard() {
@@ -230,7 +231,7 @@ advancementButton.onclick = () => {
         advancementDis.style.display = 'none'
     else {
         loadAdvancement()
-        advancementDis.style.display = 'block'
+        displayNavbox(advancementDis)
     }
 }
 
@@ -299,7 +300,7 @@ _chatButton.onclick = () => {
     if (chatContainer.style.display == 'block')
         chatContainer.style.display = 'none'
     else {
-        chatContainer.style.display = 'block'
+        displayNavbox(chatContainer)
         chatbox.scrollTop = chatbox.scrollHeight;
         chatInput.focus()
         viewedChat = chatLength
@@ -337,4 +338,12 @@ async function loadChatbox() {
         if (typeof data == 'object')
             chatbox.innerHTML += `<li><b>${data.user}</b>: ${data.text}</li>`
     })
+}
+
+function displayNavbox(navbox) {
+    let navboxs = document.getElementsByClassName('navbox')
+    for (let element of navboxs) {
+        element.style.display = 'none'
+    }
+    navbox.style.display = 'block'
 }
