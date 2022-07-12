@@ -1,1 +1,271 @@
-*{padding: 0; margin: 0; box-sizing: border-box; font-family: Sans-serif;}#blur{z-index: 999; display: none; position: absolute; top: 0; width: 100vw; height: 100vh; opacity: 0.5; background-color: black; /*display: flex; */ justify-content: center; align-items: center; flex-direction: column;}.loader{border: 16px solid white; border-radius: 50%; border-top: 16px solid #2f96db; width: 120px; height: 120px; animation: spin 2s linear infinite;}#blur p{font-size: 28px; color: white; margin-top: 10px;}@keyframes spin{0%{transform: rotate(0deg);}100%{transform: rotate(360deg);}}#container{width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center;}#nav{position: absolute; top: 0; list-style: none; display: flex; width: 100vw; justify-content: space-between;}#nav>*{margin: 10px; display: flex; justify-content: center; align-items: center;}#nav p:not(#point){margin-left: 20px; cursor: default;}#point{font-size: 28px;}.navbox{z-index: 2; display: none; position: absolute; margin-top: 10px; right: 0;}#leaderboard{width: 200px; background-color: white; list-style: none; border: 1px solid;}#leaderboard li{padding: 10px; border: 1px solid; margin: 5px;}#leaderboard li:nth-child(1){background-color: #FFD700;}#leaderboard li:nth-child(2){background-color: #C0C0C0;}#leaderboard li:nth-child(3){background-color: #CD7F32;}#leaderboard a{text-align: center; width: 100%; margin: 5px 0; display: block;}#cut{z-index: 1;}#advancement-container{z-index: 3; position: absolute; top: 0; right: 0}.advancement{border: 5px solid rgb(90, 90, 90); border-radius: 12px; background-color: rgb(35, 35, 35); color: white; padding: 10px; display: flex; justify-content: space-between;}.advancement div{display: flex; flex-direction: column; justify-content: center; margin-right: 10px;}.advancement img{height: 40px;}.advancement p{margin-bottom: 5px; font-size: 20px;}.advancement{position: relative; margin-top: 5px;}.advancement:nth-child(1){margin-top: 0;}#advancement-list p{margin-left: 0 !important;}#advancement-list .description{width: 100%; padding: 10px; top: 100%; display: none; border: 5px solid rgb(90, 90, 90); border-radius: 12px; background-color: rgb(103, 103, 103); color: white; border-radius: 12px; position: absolute; z-index: 1;}#advancement-list .advancement:hover>.description{display: block;}#chat-container{width: 220px;}#chatbox{height: 400px; overflow: auto; list-style: none; border: 1px solid; padding: 5px; margin-bottom: 5px; word-wrap: break-word; background-color: white;}#chat-container input, #chat-container button{padding: 2px;}
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Sans-serif;
+}
+
+#blur {
+    z-index: 999;
+    display: none;
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0.5;
+    background-color: black;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.loader {
+    border: 16px solid white;
+    border-radius: 50%;
+    border-top: 16px solid #2f96db;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+#blur p {
+    font-size: 28px;
+    color: white;
+    margin-top: 10px;
+}
+
+.falling-cut {
+    position: absolute;
+    top: 0;
+    z-index: -1;
+}
+
+#falling-animation {
+    position: absolute;
+    z-index: -1;
+}
+
+#container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#nav {
+    padding: 10px;
+    position: absolute;
+    top: 0;
+    list-style: none;
+    display: flex;
+    width: 100vw;
+    justify-content: space-between;
+}
+
+#nav>* {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#nav p {
+    margin-left: 20px;
+    cursor: default;
+}
+
+#point {
+    margin-left: 0 !important;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+#cps {
+    margin-left: 0 !important;
+}
+
+.navbox {
+    display: none;
+    position: absolute;
+    margin-top: 10px;
+    right: 0;
+}
+
+ul.navbox {
+    list-style: none;
+}
+
+#leaderboard {
+    width: 200px;
+    background-color: white;
+    border: 1px solid;
+}
+
+#leaderboard li {
+    padding: 10px;
+    border: 1px solid;
+    margin: 5px;
+}
+
+#leaderboard li:nth-child(1) {
+    background-color: #FFD700;
+}
+
+#leaderboard li:nth-child(2) {
+    background-color: #C0C0C0;
+}
+
+#leaderboard li:nth-child(3) {
+    background-color: #CD7F32;
+}
+
+#leaderboard a {
+    text-align: center;
+    width: 100%;
+    margin: 5px 0;
+    display: block;
+}
+
+#cut {
+    cursor: pointer;
+}
+
+#achievement-container {
+    pointer-events: none;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 3;
+    position: absolute;
+    top: 0;
+}
+
+.achievement {
+    width: 300px;
+    border: 5px solid rgb(90, 90, 90);
+    border-radius: 12px;
+    background-color: rgb(35, 35, 35);
+    color: white;
+    padding: 10px;
+    display: flex;
+    position: relative;
+    margin-top: 5px;
+}
+
+.achievement div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.achievement img {
+    max-width: 75px;
+    margin-right: 10px;
+}
+
+.achievement p {
+    margin-bottom: 5px;
+    font-size: 20px;
+}
+
+.achievement:nth-child(1) {
+    margin-top: 0;
+}
+
+.navbox p {
+    margin-left: 0 !important;
+}
+
+#achievement-list {
+    list-style: none;
+    height: 90vh;
+    overflow: auto;
+}
+
+#achievement-list .effect {
+    width: 100%;
+    padding: 10px;
+    top: 100%;
+    left: 0;
+    display: none;
+    border: 5px solid rgb(90, 90, 90);
+    border-radius: 12px;
+    background-color: rgb(103, 103, 103);
+    color: white;
+    border-radius: 12px;
+    position: absolute;
+    z-index: 1;
+}
+
+#achievement-list .achievement:hover>.effect {
+    display: block;
+}
+
+#shop {
+    overflow-y: auto;
+}
+
+#shop li {
+    position: relative;
+    background-color: white;
+    border: 1px solid;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    width: 400px;
+    margin-bottom: 5px;
+}
+
+#shop div {
+    margin-left: 20px;
+}
+
+#shop button {
+    text-align: center;
+}
+
+#shop p {
+    margin-bottom: 5px;
+}
+
+#shop img {
+    width: 75px;
+}
+
+#shop button {
+    padding: 3px;
+}
+
+#shop .stats {
+    width: 100%;
+    padding: 10px 20px;
+    background-color: white;
+    list-style: disc;
+    display: none;
+    border: 1px solid;
+    position: absolute;
+    right: 0%;
+    top: 100%;
+    z-index: 1;
+}
+
+#shop .stats li {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    display: list-item;
+    white-space: normal;
+    padding: 0;
+}
+
+#footer {
+    display: flex;
+    color: gray;
+    position: absolute;
+    bottom: 0;
+}
+
+#footer li {
+    margin-left: 25px;
+}

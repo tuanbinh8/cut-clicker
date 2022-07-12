@@ -17,7 +17,7 @@ let db = getDatabase()
 
 function readData(path) {
     const _ref = ref(db, path);
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {;
         onValue(_ref, (snapshot) => {
             resolve(snapshot.val())
         });

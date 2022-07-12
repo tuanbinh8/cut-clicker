@@ -1,0 +1,62 @@
+let allItems = [
+    {
+        name: 'baby',
+        pluralName: 'babies',
+        baseCost: 25,
+        cps: 0.1,
+        img: 'img/baby.png',
+        owned: 0,
+        cutsPooped: 0,
+        description: 'Poops some tiny little cute cuts',
+    },
+    {
+        name: 'dog',
+        pluralName: 'dogs',
+        baseCost: 200,
+        cps: 3,
+        img: 'img/dog.png',
+        owned: 0,
+        cutsPooped: 0,
+        description: 'Keeps pooping around your house *bark *bark',
+    },
+    {
+        name: 'Harry',
+        baseCost: 1200,
+        cps: 50,
+        img: 'img/harry.png',
+        owned: 0,
+        cutsPooped: 0,
+        description: 'A bad ugly stupid boi who poops everyday',
+    },
+    {
+        name: 'Kingkongdara',
+        baseCost: 30000,
+        cps: 250,
+        img: 'img/agu.png',
+        owned: 0,
+        cutsPooped: 0,
+        description: 'Always leave a big nice cut in the toilet'
+    },
+    {
+        name: 'neighbor',
+        pluralName: 'neighbors',
+        baseCost: 270000,
+        cps: 1000,
+        img: 'img/neighbor.png',
+        owned: 0,
+        cutsPooped: 0,
+        description: 'A rude guy who is always jealous with you for pooping more than him',
+    },
+    {
+        name: 'robot',
+        pluralName: 'robots',
+        baseCost: 1500000,
+        cps: 65000,
+        img: 'img/robot.png',
+        owned: 0,
+        cutsPooped: 0,
+        description: 'Poops electronic components',
+    },
+]
+
+export default allItems

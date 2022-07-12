@@ -1,1 +1,59 @@
-<!DOCTYPE html><html lang="en"><head> <meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <meta name="description" content="Click as many cut as you can. How long will it take for you to get infinite cut?"> <title>Cut clicker</title> <link rel="stylesheet" href="style.css"> <link rel="shortcut icon" href="img/cut.png" type="image/x-icon"></head><body> <div id="nav"> <div> <b> <p id="point">Cut: 0</p></b> <p id="cps">CPS: 0</p><p id="stupid-warning">(Log in to save your progress)</p><input type="checkbox" id="animation" style="margin-left: 20px;"> <label for="animation">Animation</label> </div><div> <b> <p id="name"></p></b> <div style="position:relative;"> <p id="_chat">Chat</p><div class="navbox" id="chat-container"> <ul id="chatbox"></ul> <form id="chat-form"> <input type="text"> <button type="submit">Send</button> </form> </div></div><div style="position:relative;"> <p id="_leaderboard">Leaderboard</p><ul class="navbox" id="leaderboard"></ul> </div><div style="position:relative;"> <p id="_advancement">Advancements</p><div class="navbox" id="advancement-list"></div></div><p id="reg">Register</p><p id="log">Log in</p><p id="sign-out" style="display: none;">Sign out</p></div></div><div id="container"> <img id="cut" src="img/cut.png" alt="cut" width="225"> </div><div id="blur"> <div class="loader"></div><p>Syncing...</p></div><div id="advancement-container"></div></body><script type="module" src="script.js"></script></html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Click as many cut as you can. How long will it take for you to get infinite cut?">
+    <title>Cut clicker</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="img/cut.png" type="image/x-icon">
+</head>
+
+<body>
+    <div id="nav">
+        <div>
+            <div>
+                <b>
+                    <p id="point">0 cuts</p>
+                </b>
+                <p id="cps">per second: 0</p>
+            </div>
+            <p id="stupid-warning">(Log in to save your progress)</p>
+            <input type="checkbox" id="animation" style="margin-left: 20px;">
+            <label for="animation">Animation</label>
+        </div>
+        <div>
+            <b>
+                <p id="name"></p>
+            </b>
+            <div style="position:relative;">
+                <p id="leaderboard-nav">Leaderboard</p>
+                <ul class="navbox" id="leaderboard"></ul>
+            </div>
+            <div style="position:relative;">
+                <p id="achievement-nav">Achievements</p>
+                <ul class="navbox" id="achievement-list"></ul>
+            </div>
+            <p id="shop-nav">Shop</p>
+            <p id="reg">Register</p>
+            <p id="log">Log in</p>
+            <p id="sign-out" style="display: none;">Sign out</p>
+        </div>
+    </div>
+    <ul class="navbox" id="shop"></ul>
+    <canvas id="falling-animation"></canvas>
+    <div id="container">
+        <img id="cut" src="img/cut.png" alt="cut" width="225">
+    </div>
+    <div id="blur">
+        <div class="loader"></div>
+        <p>Syncing...</p>
+    </div>
+    <div id="achievement-container"></div>
+    <ul id="footer"></ul>
+</body>
+<script type="module" src="js/script.js"></script>
+
+</html>
