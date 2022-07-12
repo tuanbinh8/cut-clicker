@@ -36,10 +36,6 @@ async function sync() {
             let item = allItems[id]
             item.owned = number
         })
-        data.itemsCutsPooped.map((number, id) => {
-            let item = allItems[id]
-            item.cutsPooped = number
-        })
         itemsUnlocked = data.itemsUnlocked
         cpsDis.innerText = 'per second: ' + formatNumber(cutsPerSecond)
         stupidWarning.remove()
@@ -63,7 +59,6 @@ function init() {
         allItems.map((item, id) => {
             if (id + 1 > itemsUnlocked) return
             item.cutsPooped += item.cps * item.owned
-            updateItemStats(id)
         })
     }, 1000)
     loadShop()
@@ -185,7 +180,6 @@ async function register(name, pass) {
         return rand() + rand(); // to make it longer
     }
     let itemsOwned = allItems.map(item => item.owned)
-    let itemsCutsPooped = allItems.map(item => item.cutsPooped)
     writeData('users/' + name, {
         name,
         pass,
@@ -193,7 +187,6 @@ async function register(name, pass) {
         token,
         achievements,
         itemsOwned,
-        itemsCutsPooped,
         itemsUnlocked,
     })
     await logIn(name, pass)
@@ -217,12 +210,10 @@ function signOut() {
 function update() {
     if (!username) return
     let itemsOwned = allItems.map(item => item.owned)
-    let itemsCutsPooped = allItems.map(item => item.cutsPooped)
     updateData('users/' + username, {
         achievements,
         point: point == Infinity ? 'Infinity' : point,
         itemsOwned,
-        itemsCutsPooped,
         itemsUnlocked,
     })
 }
@@ -358,35 +349,19 @@ function loadShop() {
     allItems.map((item, id) => {
         if (id + 1 > itemsUnlocked) return
         item.cost = Math.round(item.baseCost * (1.2 ** item.owned))
-        let li = document.createElement('li')
-        li.innerHTML = `<img src="${item.img}" alt="">
+        shopContainer.innerHTML += `<li>
+        <img src="${item.img}" alt="">
         <div>
-            <b><p class='name'>${capitalizeFirstLetter(item.name)}</p></b>
+            <b><p class='name'>${capitalizeFirstLetter(item.name)}: ${formatNumber(item.cps)} CpS</p></b>
             <p>${item.description}</p>
             <button>Buy: ${formatNumber(item.cost)}💩</button>
             <span>Owned: ${formatNumber(item.owned)}</span>
         </div>
-        <ul class='stats'></ul>`
-        li.onclick = () => {
-            let list = document.querySelectorAll('#shop .stats')[id]
-            list.onclick = (event) => event.stopPropagation()
-            if (list.style.display == 'block')
-                list.style.display = 'none'
-            else {
-                let lists = Array.from(document.querySelectorAll('#shop .stats'))
-                lists.map(list => list.style.display = 'none')
-                list.style.display = 'block'
-            }
-        }
-        shopContainer.appendChild(li)
-        updateItemStats(id)
+        </li>`
     })
     let buyButtons = Array.from(document.querySelectorAll('#shop button'))
     buyButtons.map((button, index) => {
-        button.onclick = (event) => {
-            event.stopPropagation()
-            buyItem(index)
-        }
+        button.onclick = () => buyItem(index)
         let item = allItems[index]
         if (item.cost > point) button.disabled = true
         else button.disabled = false
@@ -452,17 +427,8 @@ function displayNavbox(navbox) {
 function changeItemCPS(id, newCps) {
     let item = allItems[id]
     item.cps = newCps
-    updateItemStats(id)
+    loadShop()
     calculateTotalCPS()
-}
-
-function updateItemStats(id) {
-    let item = allItems[id]
-    let list = document.querySelectorAll('#shop .stats')[id]
-    list.innerHTML = `
-    <li>Each ${item.name} poops ${formatNumber(item.cps)}💩 per second</li>
-    <li>${formatNumber(item.owned)} ${item.owned == 1 ? item.name : item.pluralName || item.name} poop${checkSingular(item.owned, true)} ${formatNumber(item.cps * item.owned)}💩 per second</li>
-    <li>${formatNumber(item.cutsPooped)}💩 pooped in total</li>`
 }
 
 function changeCPC(newCPC) {

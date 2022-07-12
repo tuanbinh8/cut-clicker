@@ -45,7 +45,7 @@ let allItems = [
         img: 'img/neighbor.png',
         owned: 0,
         cutsPooped: 0,
-        description: 'A rude guy who is always jealous with you for pooping more than him',
+        description: 'Rude. Jealous with you for pooping more than him',
     },
     {
         name: 'robot',

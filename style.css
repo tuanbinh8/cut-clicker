@@ -217,6 +217,10 @@ ul.navbox {
     margin-bottom: 5px;
 }
 
+#shop li:hover>.stats {
+    display: block;
+}
+
 #shop div {
     margin-left: 20px;
 }
@@ -235,28 +239,6 @@ ul.navbox {
 
 #shop button {
     padding: 3px;
-}
-
-#shop .stats {
-    width: 100%;
-    padding: 10px 20px;
-    background-color: white;
-    list-style: disc;
-    display: none;
-    border: 1px solid;
-    position: absolute;
-    right: 0%;
-    top: 100%;
-    z-index: 1;
-}
-
-#shop .stats li {
-    width: 100%;
-    background-color: transparent;
-    border: none;
-    display: list-item;
-    white-space: normal;
-    padding: 0;
 }
 
 #footer {

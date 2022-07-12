@@ -21,7 +21,7 @@ let allAchievements =
         },
         {
             name: 'Cut billionaire',
-            img: 'img/elon.png',
+            img: 'img/billionaire.png',
             description: 'Have 1 billion cuts',
         },
         {
