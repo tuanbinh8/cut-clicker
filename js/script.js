@@ -99,7 +99,7 @@ function fallingCut() {
     this.speed = (Math.random() * 5) + 2
     this.update = () => {
         if (this.y < fallingAnimationCanvas.height) {
-            ctx.drawImage(img, this.x, this.y, 75, 48.404)
+            ctx.drawImage(img, this.x, this.y, 75, 48)
         }
         else
             fallingCuts.splice(fallingCuts.indexOf(this), 1)
@@ -385,7 +385,11 @@ else {
     init()
 }
 console.log('%cBE CAREFUL!!!', 'color:red; font-size:30px;font-weight:bold;');
-console.log('If someone told you to copy-and-paste something here, don\'t do it! It could allow them to take over your account, delete all of your cuts, do many other harmful things... or it might give you more cuts 💩💩💩')
+console.log('If someone told you to copy and paste something here, don\'t do it! It could allow them to take over your account, delete all of your cuts, do many other harmful things... or it may give you more cuts 💩💩💩')
+
+window.onbeforeunload = (event) => {
+    // if (!username) event.returnValue = 'If you leave, all of ypur progress won\'t be saved!'
+}
 
 function calculateTotalCPS() {
     cutsPerSecond = 0
@@ -393,7 +397,6 @@ function calculateTotalCPS() {
         cutsPerSecond += item.cps * item.owned
     })
     cutsPerSecond = Number(cutsPerSecond.toFixed(3))
-    console.log(formatNumber(cutsPerSecond));
     cpsDis.innerText = 'per second: ' + formatNumber(cutsPerSecond)
 }
 
