@@ -1,10 +1,9 @@
-import { readData, readAllData, readDataWhere, writeData, updateData, changeListener } from './database.js'
+import { readData, readDataWhere, writeData, updateData, changeListener } from './database.js'
 import allAchievements from './achievement.js'
 import allItems from './item.js'
 
 let cut = document.getElementById('cut')
 let point = 0
-let clickable = true
 let username
 let achievements = []
 let cutsPerClick = 1
@@ -21,7 +20,6 @@ let nameDis = document.getElementById('name')
 stupidWarning.onclick = () => stupidWarning.remove()
 
 async function sync() {
-    clickable = false
     blur.style.display = 'flex'
     let data = await readDataWhere('users', 'token', localStorage.token)
     if (!data) signOut()
@@ -43,7 +41,6 @@ async function sync() {
         logButton.remove()
         signOutButton.style.display = 'block'
         blur.remove()
-        clickable = true
         achievements.map(achievement => {
             if (achievement.effect) achievement.effect()
         })
@@ -52,14 +49,14 @@ async function sync() {
 }
 
 function init() {
-    changeListener('users', loadLeaderboard)
+    changeListener('users', () => {
+        loadLeaderboard()
+        loadAchievement()
+    })
     loadAchievement()
     setInterval(() => {
         addPoint(cutsPerSecond)
-        allItems.map((item, id) => {
-            if (id + 1 > itemsUnlocked) return
-            item.cutsPooped += item.cps * item.owned
-        })
+        allItems.map(item => item.cutsPooped += item.cps * item.owned)
     }, 1000)
     loadShop()
     calculateTotalCPS()
@@ -107,7 +104,6 @@ function fallingCut() {
 }
 
 cut.onclick = () => {
-    if (!clickable) return
     addPoint(cutsPerClick)
     if (animationCheckbox.checked) {
         cut.width = 250
@@ -132,11 +128,11 @@ function addPoint(pointAdded) {
         if (item.cost > point) button.disabled = true
         else button.disabled = false
     })
-    if (point >= 1) getAchievement(0)
-    // if (point >= 1000) getAchievement(3)
-    // if (point >= 1000000) getAchievement(4)
-    // if (point >= 1000000000) getAchievement(5)
-    // if (point >= Infinity) getAchievement(1)
+    // if (point >= 1) unlockAchievement(0)
+    // if (point >= 1000) unlockAchievement(3)
+    // if (point >= 1000000) unlockAchievement(4)
+    // if (point >= 1000000000) unlockAchievement(5)
+    // if (point >= Infinity) unlockAchievement(1)
     update()
 }
 //auth
@@ -223,16 +219,17 @@ let leaderboardNav = document.getElementById('leaderboard-nav')
 let leaderboardDis = document.getElementById('leaderboard')
 
 leaderboardNav.onclick = async () => {
-    if (leaderboardDis.style.display == 'block')
+    if (leaderboardDis.style.display == 'block') {
         leaderboardDis.style.display = 'none'
-    else {
+        leaderboardNav.style.textShadow = 'none'
+    } else {
         displayNavbox(leaderboardDis)
     }
 }
 
 async function loadLeaderboard() {
     leaderboardDis.innerHTML = ''
-    let allUsers = Object.values(await readAllData('users') || {})
+    let allUsers = Object.values(await readData('users') || {})
     allUsers.sort((a, b) => b.point - a.point);
     let userPlace = allUsers.findIndex(user => user.name == username)
     for (let i = 0; i <= 4; i++) {
@@ -247,62 +244,80 @@ async function loadLeaderboard() {
         let user = allUsers[userPlace]
         leaderboardDis.innerHTML += `<li><b>(${userPlace + 1}) ${user.name}: ${formatNumber(user.point)}💩</b></li>`
     }
-    // if (userPlace == 0) getAchievement(2)
-    leaderboardDis.innerHTML += `<a href='leaderboard' target='_blank'>Entire Leaderboard</a>`
+    // if (userPlace == 0) unlockAchievement(2)
+    leaderboardDis.innerHTML += '<a href="leaderboard" target="_blank">Entire Leaderboard</a>'
 }
 
 //achievement
 let achievementNav = document.getElementById('achievement-nav')
-let achievementDis = document.getElementById('achievement-list')
-let achievementContainer = document.getElementById('achievement-container')
+let achievementList = document.getElementById('achievement-list')
+let achievementUnlockContainer = document.getElementById('achievement-unlock-container')
+let achievementInforBox = document.getElementById('achievement-infor')
+
+setInterval(() => {
+    let achievementNavRect = achievementNav.getBoundingClientRect()
+    achievementList.style.maxHeight = window.innerHeight - achievementNavRect.bottom - 10 + 'px'
+})
 
 achievementNav.onclick = () => {
-    if (achievementDis.style.display == 'block')
-        achievementDis.style.display = 'none'
-    else {
-        loadAchievement()
-        displayNavbox(achievementDis)
+    if (achievementList.style.display == 'flex') {
+        achievementList.style.display = 'none'
+        achievementNav.style.textShadow = 'none'
+    } else {
+        displayNavbox(achievementList, 'flex')
     }
 }
 
 function loadAchievement() {
-    achievementDis.innerHTML = ''
-    if (!achievements.length) achievementDis.innerHTML = 'No achievements got!'
+    achievementList.innerHTML = ''
+    if (!achievements.length) achievementList.innerHTML = 'No achievements unlocked!'
     else achievementNav.innerText = `Achievement (${formatNumber(achievements.length)})`
-    achievements.map(id => {
-        let achievement = allAchievements[id]
-        achievementDis.innerHTML += `<li class='achievement'>
-            <div>
-                <img src="${achievement.img}" alt="">
-            </div>
-            <div>
-                <p style="color: yellow;">${achievement.name}</p>
-                <p>${achievement.description}</p>
-            </div>
-            ${achievement.effect ? `<p class='effect'>${achievement.effectDes}</p>` : ''}
-        </li>`
+    achievements.map(name => {
+        let achievement = allAchievements.filter(achievement => achievement.name == name)[0]
+        let li = document.createElement('li')
+        li.innerHTML = `<img src='${achievement.img}'>`
+        li.onmouseover = () => {
+            achievementInforBox.innerHTML = `<div class='main'>
+                    <div>
+                        <img src="${achievement.img}" alt="">
+                    </div>
+                    <div>
+                        <p style="color: yellow;">${achievement.name}</p>
+                        <p>${achievement.description}</p>
+                    </div>
+                </div>
+                ${achievement.effect ? `<hr><p class='effect'>Effect: ${achievement.effectDes}</p>` : ''}`
+            let rect = li.getBoundingClientRect()
+            achievementInforBox.style.top = rect.bottom + achievementInforBox.offsetHeight > window.innerHeight ? rect.y - achievementInforBox.offsetHeight + 'px' : rect.bottom + 'px'
+            achievementInforBox.style.left = `min(${window.innerWidth - 355}px,${rect.x}px)`
+            achievementInforBox.style.opacity = 1
+        }
+        li.onmouseout = () => achievementInforBox.style.opacity = 0
+        achievementList.appendChild(li)
     })
 }
 
-function getAchievement(id) {
-    if (achievements.indexOf(id) > -1) return
+function unlockAchievement(name) {
+    let achievement = allAchievements.filter(achievement => achievement.name == name)[0]
+    if (achievements.indexOf(name) > -1 || !achievement) return
     let fart = new Audio('fart.mp3')
     fart.play()
-    achievements.push(id)
+    achievements.push(name)
     update()
     loadAchievement()
-    let achievement = allAchievements[id]
     if (achievement.effect) achievement.effect()
-    let achievementBox = document.createElement('div')
+    let achievementBox = document.createElement('li')
     achievementBox.className = 'achievement'
-    achievementBox.innerHTML = `<div>
+    achievementBox.innerHTML = `<div class='main'>
+    <div>
     <img src="${achievement.img}" alt="">
 </div>
 <div>
-    <p style="color: yellow;">Achievement get!</p>
+    <p style="color: yellow;">Achievement unlocked!</p>
     <p>${achievement.name}</p>
+</div>
 </div>`
-    achievementContainer.appendChild(achievementBox)
+    achievementUnlockContainer.appendChild(achievementBox)
     if (animationCheckbox.checked) {
         animate()
         function animate() {
@@ -338,16 +353,17 @@ setInterval(() => {
 })
 
 shopNav.onclick = () => {
-    if (shopContainer.style.display == 'block')
+    if (shopContainer.style.display == 'block') {
         shopContainer.style.display = 'none'
-    else
+        shopNav.style.textShadow = 'none'
+    } else
         displayNavbox(shopContainer)
 }
 
 function loadShop() {
     shopContainer.innerHTML = ''
-    allItems.map((item, id) => {
-        if (id + 1 > itemsUnlocked) return
+    for (let i = 0; i < itemsUnlocked; i++) {
+        let item = allItems[i]
         item.cost = Math.round(item.baseCost * (1.2 ** item.owned))
         shopContainer.innerHTML += `<li>
         <img src="${item.img}" alt="">
@@ -358,7 +374,7 @@ function loadShop() {
             <span>Owned: ${formatNumber(item.owned)}</span>
         </div>
         </li>`
-    })
+    }
     let buyButtons = Array.from(document.querySelectorAll('#shop button'))
     buyButtons.map((button, index) => {
         button.onclick = () => buyItem(index)
@@ -369,7 +385,7 @@ function loadShop() {
 }
 
 function buyItem(id) {
-    // getAchievement(6)
+    // unlockAchievement(6)
     let item = allItems[id]
     addPoint(-item.cost)
     item.owned++
@@ -403,14 +419,16 @@ function calculateTotalCPS() {
 function formatNumber(number) {
     number = number >= 1e21 ? number : Number(number.toFixed(3))
     let str = ''
+    let _number = number
     let units = ['million', 'billion', 'trillion', 'quadrillion', 'quintillion']
     units.map((unit, index) => {
         let powOf10 = 10 ** (3 * (index + 2))
         if (number >= powOf10 && number < 1e21) {
-            number = (Number(number.toFixed(3)) / powOf10)
+            _number = (Number(number.toFixed(3)) / powOf10)
             str = unit
         }
     })
+    number = _number
     return `${number.toLocaleString()}${str ? ' ' + str : ''}`
 }
 
@@ -419,12 +437,17 @@ function checkSingular(number, isVerb) {
     return isVerb ? '' : 's'
 }
 
-function displayNavbox(navbox) {
-    let navboxs = document.getElementsByClassName('navbox')
-    for (let element of navboxs) {
-        element.style.display = 'none'
+function displayNavbox(navbox, display = 'block') {
+    let navboxs = Array.from(document.getElementsByClassName('navbox'))
+    let index = navboxs.indexOf(navbox)
+    navboxs.map(navbox => navbox.style.display = 'none')
+    navbox.style.display = display
+
+    let navPs = document.getElementsByClassName('nav-p')
+    for (let element of navPs) {
+        element.style.textShadow = 'none'
     }
-    navbox.style.display = 'block'
+    navPs[index].style.textShadow = '0 0 5px grey'
 }
 
 function changeItemCPS(id, newCps) {
@@ -438,8 +461,16 @@ function changeCPC(newCPC) {
     cutsPerClick = newCPC
 }
 
+function changePoint(newPoint) {
+    point = newPoint
+}
+
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-export { cutsPerClick, changeItemCPS, changeCPC }
+export { cutsPerClick, changeItemCPS, changeCPC, changePoint }
+
+allAchievements.map((a, i) => {
+    unlockAchievement(a.name)
+})

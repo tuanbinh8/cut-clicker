@@ -28,21 +28,20 @@
     animation: spin 2s linear infinite;
 }
 
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 #blur p {
     font-size: 28px;
     color: white;
     margin-top: 10px;
-}
-
-.falling-cut {
-    position: absolute;
-    top: 0;
-    z-index: -1;
-}
-
-#falling-animation {
-    position: absolute;
-    z-index: -1;
 }
 
 #container {
@@ -53,6 +52,16 @@
     align-items: center;
 }
 
+#cut {
+    cursor: pointer;
+}
+
+#falling-animation {
+    position: absolute;
+    z-index: -1;
+}
+
+/* navbar */
 #nav {
     padding: 10px;
     position: absolute;
@@ -69,6 +78,10 @@
     align-items: center;
 }
 
+#nav div {
+    position: relative;
+}
+
 #nav p {
     margin-left: 20px;
     cursor: default;
@@ -80,13 +93,9 @@
     font-weight: bold;
 }
 
-#cps {
-    margin-left: 0 !important;
-}
-
 .navbox {
     display: none;
-    position: absolute;
+    position: absolute !important;
     margin-top: 10px;
     right: 0;
 }
@@ -95,6 +104,11 @@ ul.navbox {
     list-style: none;
 }
 
+.navbox p {
+    margin-left: 0 !important;
+}
+
+/* leaderboard */
 #leaderboard {
     width: 200px;
     background-color: white;
@@ -119,19 +133,80 @@ ul.navbox {
     background-color: #CD7F32;
 }
 
-#leaderboard a {
+#leaderboard a, #achievement-list a {
     text-align: center;
     width: 100%;
     margin: 5px 0;
     display: block;
 }
 
-#cut {
+/* achievement */
+.achievement {
+    width: 350px;
+    border: 5px solid rgb(90, 90, 90);
+    border-radius: 12px;
+    background-color: rgb(35, 35, 35);
+    color: white;
+    padding: 10px;
+    margin-top: 5px;
+}
+
+.achievement .main {
+    display: flex;
+}
+
+.achievement .main div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.achievement img {
+    width: 75px;
+    margin-right: 10px;
+}
+
+.achievement p {
+    margin: 5px 0;
+    font-size: 20px;
+}
+
+.achievement:nth-child(1) {
+    margin-top: 0;
+}
+
+.achievement hr {
+    margin-top: 5px;
+}
+
+#achievement-list {
+    padding: 10px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 81vw;
+    background-color: rgb(35, 35, 35);
+    flex-wrap: wrap;
+}
+
+#achievement-list li {
+    margin: 5px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+#achievement-list img {
+    width: 80px;
+}
+
+#achievement-list li:hover img {
+    position: relative;
+    top: -5px;
 }
 
 #achievement-container {
     pointer-events: none;
+    list-style: none;
     width: 100vw;
     display: flex;
     flex-direction: column;
@@ -141,67 +216,15 @@ ul.navbox {
     top: 0;
 }
 
-.achievement {
-    width: 300px;
-    border: 5px solid rgb(90, 90, 90);
-    border-radius: 12px;
-    background-color: rgb(35, 35, 35);
-    color: white;
-    padding: 10px;
-    display: flex;
-    position: relative;
-    margin-top: 5px;
-}
-
-.achievement div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.achievement img {
-    max-width: 75px;
-    margin-right: 10px;
-}
-
-.achievement p {
-    margin-bottom: 5px;
-    font-size: 20px;
-}
-
-.achievement:nth-child(1) {
+#achievement-infor {
     margin-top: 0;
-}
-
-.navbox p {
-    margin-left: 0 !important;
-}
-
-#achievement-list {
-    list-style: none;
-    height: 90vh;
-    overflow: auto;
-}
-
-#achievement-list .effect {
-    width: 100%;
-    padding: 10px;
-    top: 100%;
-    left: 0;
-    display: none;
-    border: 5px solid rgb(90, 90, 90);
-    border-radius: 12px;
-    background-color: rgb(103, 103, 103);
-    color: white;
-    border-radius: 12px;
     position: absolute;
-    z-index: 1;
+    opacity: 0;
+    z-index: 99;
+    pointer-events: none;
 }
 
-#achievement-list .achievement:hover>.effect {
-    display: block;
-}
-
+/* shop */
 #shop {
     overflow-y: auto;
 }
@@ -241,6 +264,7 @@ ul.navbox {
     padding: 3px;
 }
 
+/* footer */
 #footer {
     display: flex;
     color: gray;

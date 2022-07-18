@@ -18,7 +18,7 @@
                 <b>
                     <p id="point">0 cuts</p>
                 </b>
-                <p id="cps">per second: 0</p>
+                <p id="cps" style="margin-left: 0;">per second: 0</p>
             </div>
             <p id="stupid-warning">(Log in to save your progress)</p>
             <input type="checkbox" id="animation" style="margin-left: 20px;">
@@ -28,21 +28,22 @@
             <b>
                 <p id="name"></p>
             </b>
-            <div style="position:relative;">
-                <p id="leaderboard-nav">Leaderboard</p>
+            <div>
+                <p class="nav-p" id="leaderboard-nav">Leaderboard</p>
                 <ul class="navbox" id="leaderboard"></ul>
             </div>
-            <div style="position:relative;">
-                <p id="achievement-nav">Achievements</p>
+            <div>
+                <p class="nav-p" id="achievement-nav">Achievements</p>
                 <ul class="navbox" id="achievement-list"></ul>
             </div>
-            <p id="shop-nav">Shop</p>
+            <p class="nav-p" id="shop-nav">Shop</p>
             <p id="reg">Register</p>
             <p id="log">Log in</p>
             <p id="sign-out" style="display: none;">Sign out</p>
         </div>
     </div>
     <ul class="navbox" id="shop"></ul>
+    <div id="achievement-infor" class="achievement"></div>
     <canvas id="falling-animation"></canvas>
     <div id="container">
         <img id="cut" src="img/cut.png" alt="cut" width="225">
@@ -51,7 +52,7 @@
         <div class="loader"></div>
         <p>Syncing...</p>
     </div>
-    <div id="achievement-container"></div>
+        <ul id="achievement-unlock-container"></ul>
     <ul id="footer"></ul>
 </body>
 <script type="module" src="js/script.js"></script>

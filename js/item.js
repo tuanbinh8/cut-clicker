@@ -27,12 +27,12 @@ let allItems = [
         img: 'img/neighbor.png',
         owned: 0,
         cutsPooped: 0,
-        description: 'Always trying to poop more than you',
+        description: 'Always want to poop more than you',
     },
     {
         name: 'Kingkongdara',
         baseCost: 30000,
-        cps: 250,
+        cps: 50,
         img: 'img/agu.png',
         owned: 0,
         cutsPooped: 0,
@@ -41,7 +41,7 @@ let allItems = [
     {
         name: 'Harry',
         baseCost: 270000,
-        cps: 1000,
+        cps: 450,
         img: 'img/harry.png',
         owned: 0,
         cutsPooped: 0,
@@ -65,6 +65,16 @@ let allItems = [
         owned: 0,
         cutsPooped: 0,
         description: 'Poops electronic components',
+    },
+    {
+        name: 'hacker',
+        pluralName: 'hackers',
+        baseCost: 330000000,
+        cps: 100000,
+        img: 'img/hacker.jpg',
+        owned: 0,
+        cutsPooped: 0,
+        description: 'Hacks into everyone\'s toilet and steal their cuts',
     },
 ]
 

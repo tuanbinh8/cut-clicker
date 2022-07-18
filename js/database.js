@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-app.js";
-import { getDatabase, ref, set, onValue, child, push, update, query, orderByChild } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
+import { getDatabase, ref, set, onValue, child, push, update, query } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBaCCt_zcOSjF5DtEura_GYwnXACXrfNFI",
@@ -24,17 +24,8 @@ function readData(path) {
     })
 }
 
-function readAllData(path) {
-    const _ref = ref(db, path);
-    return new Promise((resolve, reject) => {
-        onValue(_ref, (snapshot) => {
-            resolve(snapshot.val())
-        });
-    })
-}
-
 async function readDataWhere(path, property, value) {
-    let allData = await readAllData(path)
+    let allData = await readData(path)
     let result
     for (let data in allData) {
         if (allData[data][property] == value) {
@@ -60,4 +51,4 @@ function changeListener(path, cb) {
     });
 }
 
-export { readData, readAllData, readDataWhere, writeData, updateData, changeListener }
+export { readData, readDataWhere, writeData, updateData, changeListener }
