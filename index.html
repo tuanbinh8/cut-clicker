@@ -12,48 +12,85 @@
 </head>
 
 <body>
-    <div id="nav">
-        <div>
-            <div>
-                <b>
-                    <p id="point">0 cuts</p>
-                </b>
-                <p id="cps" style="margin-left: 0;">per second: 0</p>
-            </div>
-            <p id="stupid-warning">(Log in to save your progress)</p>
-            <input type="checkbox" id="animation" style="margin-left: 20px;">
-            <label for="animation">Animation</label>
-        </div>
-        <div>
-            <b>
-                <p id="name"></p>
-            </b>
-            <div>
-                <p class="nav-p" id="leaderboard-nav">Leaderboard</p>
-                <ul class="navbox" id="leaderboard"></ul>
-            </div>
-            <div>
-                <p class="nav-p" id="achievement-nav">Achievements</p>
-                <ul class="navbox" id="achievement-list"></ul>
-            </div>
-            <p class="nav-p" id="shop-nav">Shop</p>
-            <p id="reg">Register</p>
-            <p id="log">Log in</p>
-            <p id="sign-out" style="display: none;">Sign out</p>
-        </div>
-    </div>
-    <ul class="navbox" id="shop"></ul>
     <div id="achievement-infor" class="achievement"></div>
     <canvas id="falling-animation"></canvas>
-    <div id="container">
-        <img id="cut" src="img/cut.png" alt="cut" width="225">
-    </div>
+    <canvas id="point-add"></canvas>
     <div id="blur">
         <div class="loader"></div>
         <p>Syncing...</p>
     </div>
-        <ul id="achievement-unlock-container"></ul>
-    <ul id="footer"></ul>
+    <ul id="achievement-unlock-container"></ul>
+    <div id="container">
+        <div id="left">
+            <div id="nav">
+                <div>
+                    <div>
+                        <p id="point">0 cuts</p>
+                        <p id="cps" style="margin-left: 0;">per second: 0</p>
+                    </div>
+                </div>
+                <div>
+                    <b>
+                        <p id="name"></p>
+                    </b>
+                    <p id="register">Register</p>
+                    <p id="log-in">Log in</p>
+                    <p id="sign-out">Sign out</p>
+                </div>
+            </div>
+            <div id="cut-container">
+                <img id="cut" src="img/cut.png" alt="cut" width="275">
+            </div>
+        </div>
+        <div id="right">
+            <div style="display: flex;">
+                <button class="tab">Stats & Options</button>
+                <button class="tab">Achievements</button>
+                <button class="tab active">Shop</button>
+                <button class="tab">Chat<span id="unseen-chat">0</span></button>
+            </div>
+            <div>
+                <div class="box" id="stats-options">
+                    <ul id="stats"></ul>
+                    <hr>
+                    <h3>Save</h3>
+                    <button id="import-save">Import save</button>
+                    <button id="export-save">Export save</button>
+                    <button id="clear-save">Clear save</button>
+                    <h3>Animation (disabling any of these options may improve performance)</h3>
+                    <form id="options">
+                        <div>
+                            <input type="checkbox" name="cut-animation" id="cut-animation">
+                            <label for="cut-animation">The cut reacts when clicked</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="falling-cuts" id="falling-cuts">
+                            <label for="falling-cuts">Falling cuts</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="number-animation" id="number-animation">
+                            <label for="number-animation">Show number when click</label>
+                        </div>
+                    </form>
+                </div>
+                <ul class="box" id="achievement-list"></ul>
+                <ul class="box" id="shop" style="display: block"></ul>
+                <ul class="box" id="chat">
+                    <ul id="chat-list"></ul>
+                    <form id="chat-form">
+                        <input name="input" type="text">
+                        <button type="submit">Send</button>
+                    </form>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <ul id="footer">
+        <li>made with 💩 by <a href="https://github.com/tuanbinh8" target="_blank">tuanbinh</a></li>
+        <li>based on <a href="https://orteil.dashnet.org/cookieclicker/" target="_blank">Cookie Clicker</a></li>
+        <li><a href="https://github.com/tuanbinh8/cut-clicker" target="_blank">Github</a></li>
+        <li><a href="https://paypal.me/jkelol111" target="_blank">Donate</a></li>
+    </ul>
 </body>
 <script type="module" src="js/script.js"></script>
 
