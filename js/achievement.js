@@ -107,6 +107,31 @@ let allAchievements =
             description: 'Poop 1 trillion cuts per second',
             effect: '+200% Cuts per second',
         },
+        //Items
+        {
+            name: 'Own 50 items',
+            img: 'img/kindergarten.jpg',
+            description: 'Own 50 items',
+            effect: 'Babies are twice as efficient'
+        },
+        {
+            name: 'Own 100 items',
+            img: 'img/kindergarten.jpg',
+            description: 'Own 100 items',
+            effect: 'Babies are twice as efficient'
+        },
+        {
+            name: 'Own 200 items',
+            img: 'img/kindergarten.jpg',
+            description: 'Own 200 items',
+            effect: 'Babies are twice as efficient'
+        },
+        {
+            name: 'Own 300 items',
+            img: 'img/kindergarten.jpg',
+            description: 'Own 300 items',
+            effect: 'Babies are twice as efficient'
+        },
         //Baby (done)
         {
             name: 'Who needs a potty?',
@@ -350,25 +375,30 @@ let allAchievements =
         //Hacker
         {
             name: 'stealCut()',
+            img: 'img/stealCut.png',
             description: 'Own 1 hacker',
         },
         {
             name: 'Own 50 hackers',
+            img: 'img/stealCut.png',
             description: 'Own 50 hackers',
             effect: 'Cao Cao are twice as efficient',
         },
         {
             name: 'Own 100 hackers',
+            img: 'img/stealCut.png',
             description: 'Own 100 hackers',
             effect: 'Cao Cao are 3 times as efficient',
         },
         {
             name: 'Own 200 hackers',
+            img: 'img/stealCut.png',
             description: 'Own 200 hackers',
             effect: 'Cao Cao are 4 times as efficient',
         },
         {
             name: 'Own 300 hackers',
+            img: 'img/stealCut.png',
             description: 'Own 300 hackers',
             effect: 'Cao Cao are 5 times as efficient',
         },

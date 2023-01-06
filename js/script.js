@@ -10,6 +10,7 @@ let cutsPerSecond = 0
 let multiplier = 1
 let updateable = true
 
+let title = document.getElementsByTagName('title')[0]
 let cut = document.getElementById('cut')
 let pointDis = document.getElementById('point')
 let cpsDis = document.getElementById('cps')
@@ -68,6 +69,7 @@ async function init() {
                     item.cps = itemsCPS[name]
             }
         }
+
         itemsUnlocked = localStorage.itemsUnlocked ? Number(localStorage.itemsUnlocked) : 2
         itemsUnlocked = localStorage.itemsUnlocked > allItems.length ? allItems.length : localStorage.itemsUnlocked
         cutsClick = localStorage.cutsClick ? Number(localStorage.cutsClick) : 0
@@ -76,25 +78,27 @@ async function init() {
         bigCutSpawned = localStorage.bigCutSpawned ? Number(localStorage.bigCutSpawned) : 0
         chatTab.remove()
         signOutButton.remove()
-
-        itemsUnlocked = allItems.length
-        // achievements = allAchievements.map(a => a.name)@
     }
     CaoCaoDiarrheaIncrease = 0.1 + allItems[6].owned * 0.1
     animationForm['cut-animation'].checked = localStorage.bigCutAnimation ? JSON.parse(localStorage.bigCutAnimation) : true
     animationForm['falling-cuts'].checked = localStorage.fallingCuts ? JSON.parse(localStorage.fallingCuts) : true
     animationForm['number-animation'].checked = localStorage.numberAnimation ? JSON.parse(localStorage.numberAnimation) : true
     pointDis.innerText = formatNumber(Math.floor(point)) + ' cut' + (point == 1 ? '' : 's')
+    title.innerText = formatNumber(Math.floor(point)) + ' cut' + (point == 1 ? '' : 's')
     cpsDis.innerHTML = `per second: ${formatNumber(cutsPerSecond)}`
     loadAchievement()
     loadShop()
     loadStats()
     changeListener('chat', loadChat)
     setInterval(() => {
+        timePlayed++
         cps = click
         click = 0
         addPoint(cutsPerSecond)
-        timePlayed++
+        let random = Math.floor(Math.random() * (1e9 + 1));
+        if (random == 888) {
+            unlockAchievement('A bit of luck')
+        }
     }, 1000)
     setInterval(() => {
         fallingAnimationCanvas.width = document.getElementById('cut-container').offsetWidth
@@ -188,6 +192,7 @@ function addPoint(pointAdded) {
         totalCuts += pointAdded
     point += pointAdded
     pointDis.innerText = formatNumber(Math.floor(point)) + ' cut' + (point == 1 ? '' : 's')
+    title.innerText = formatNumber(Math.floor(point)) + ' cut' + (point == 1 ? '' : 's')
     let buyButtons = Array.from(document.querySelectorAll('#shop button'))
     buyButtons.map((button, index) => {
         let item = allItems[index]
@@ -905,7 +910,7 @@ function loadShop() {
     shopContainer.innerHTML = ''
     for (let i = 0; i < itemsUnlocked; i++) {
         let item = allItems[i]
-        item.cost = Math.round(item.baseCost * (1.1 ** item.owned))
+        item.cost = Math.round(item.baseCost * (1.2 ** item.owned))
         shopContainer.innerHTML += `<li>
         <img src="${item.img}" alt="">
         <div>
@@ -1037,4 +1042,10 @@ function convertTime(second) {
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+devMode()
+function devMode() {
+    itemsUnlocked = allItems.length
+    achievements = allAchievements.map(a => a.name)
 }

@@ -46,7 +46,7 @@ let allItems = [
     {
         name: 'Nikocado Avocado',
         baseCost: 4000000,
-        cps: 2500,
+        cps: 900,
         img: 'img/nikocado.jpg',
         description: 'He eats a lot, probably also poops a lot',
         owned: 0,
@@ -54,7 +54,7 @@ let allItems = [
     {
         name: 'Cao Cao',
         baseCost: 46000000,
-        cps: 13000,
+        cps: 1300,
         img: 'img/caocao.jpg',
         description: 'Make people get diarrhea<br>Each Cao Cao boosts 0.1 CPS to every items unlocked',
         owned: 0,
@@ -63,7 +63,7 @@ let allItems = [
         name: 'robot',
         pluralName: 'robots',
         baseCost: 330000000,
-        cps: 100000,
+        cps: 10000,
         img: 'img/robot.png',
         description: 'Poops electronic components',
         owned: 0,
@@ -71,7 +71,7 @@ let allItems = [
     {
         name: 'hacker',
         baseCost: 5400000000,
-        cps: 900000,
+        cps: 90000,
         pluralName: 'hackers',
         img: 'img/hacker.jpg',
         description: 'Hacks into everyone\'s toilet and steal their cuts',
@@ -80,7 +80,7 @@ let allItems = [
     {
         name: 'God',
         baseCost: 99999999999,
-        cps: 9999999,
+        cps: 999999,
         img: 'img/god.jpg',
         description: 'God does poop, doesn\'t he?',
         owned: 0,
