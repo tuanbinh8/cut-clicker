@@ -2,12 +2,13 @@ import { readData, readDataWhere, writeData, updateData, changeListener } from '
 import allAchievements from './achievement.js'
 import allItems from './item.js'
 
-let username, point, achievements, itemsUnlocked, totalCuts, cutsClick, cutsPoopedByClicking, timePlayed, bigCutSpawned
+let username, point, achievements, itemsUnlocked, totalCuts, cutsClick, cutsPoopedByClicking, timePlayed, bigCutSpawned, totalItemsOwned
 let bigCutAppearing = 0
 let click = 0, cps
 let cutsPerClick = 1
 let cutsPerSecond = 0
 let multiplier = 1
+let clickable = true
 let updateable = true
 
 let title = document.getElementsByTagName('title')[0]
@@ -18,6 +19,7 @@ let animationForm = document.getElementById('options')
 let nameDis = document.getElementById('name')
 let blur = document.getElementById('blur')
 let chatTab = document.querySelectorAll('#right .tab')[3]
+let flushContainer = document.getElementById('flush')
 
 async function init() {
     if (localStorage.token) {
@@ -69,9 +71,8 @@ async function init() {
                     item.cps = itemsCPS[name]
             }
         }
-
         itemsUnlocked = localStorage.itemsUnlocked ? Number(localStorage.itemsUnlocked) : 2
-        itemsUnlocked = localStorage.itemsUnlocked > allItems.length ? allItems.length : localStorage.itemsUnlocked
+        itemsUnlocked = itemsUnlocked > allItems.length ? allItems.length : itemsUnlocked
         cutsClick = localStorage.cutsClick ? Number(localStorage.cutsClick) : 0
         cutsPoopedByClicking = localStorage.cutsPoopedByClicking ? Number(localStorage.cutsPoopedByClicking) : 0
         timePlayed = localStorage.timePlayed ? Number(localStorage.timePlayed) : 0
@@ -109,6 +110,8 @@ async function init() {
         leftDivs[1].style.height = window.innerHeight - leftDivs[0].offsetHeight + 'px'
         let rightDivs = document.querySelectorAll('#right > div')
         rightDivs[1].style.height = window.innerHeight - rightDivs[0].offsetHeight + 'px'
+        let leftContainer = document.getElementById('left')
+        flushContainer.style.width = leftContainer.offsetWidth + 'px'
     })
     blur.remove()
 }
@@ -159,6 +162,7 @@ animationForm.onchange = () => {
 
 
 cut.onclick = (event) => {
+    if (!clickable) return
     click++
     cutsClick++
     cutsPoopedByClicking += cutsPerClick
@@ -258,7 +262,7 @@ function pointAdd(x, y, pointAdded) {
     this.update = () => {
         pointAddCtx.fillStyle = `rgb(0,0,0,${this.opacity})`;
         if (this.opacity)
-            pointAddCtx.fillText(`+${formatNumber(pointAdded)}💩`, x, this.y, 75, 48)
+            pointAddCtx.fillText(`+${formatNumber(pointAdded)}💩`, x, this.y)
         else
             pointAddTexts.splice(pointAddTexts.indexOf(this), 1)
     }
@@ -272,7 +276,7 @@ function bigCut() {
     this.isBig = true
     this.x = Math.random() * fallingAnimationCanvas.width
     this.y = 0
-    this.speed = (Math.random() * 1) + 0.1
+    this.speed = Math.random() + 0.1
     this.update = () => {
         if (this.y < window.innerHeight) {
             fallingAnimationCtx.drawImage(img, this.x, this.y, 75, 100)
@@ -336,6 +340,7 @@ async function register(name, pass) {
             pass,
             token,
             point: String(point),
+            cutsPerClick: String(cutsPerClick),
             totalCuts: String(totalCuts),
             achievements,
             itemsOwned,
@@ -357,6 +362,7 @@ async function register(name, pass) {
             pass,
             token,
             point: 0,
+            cutsPerClick: 1,
             achievements: [],
             itemsCPS,
             itemsOwned,
@@ -406,7 +412,7 @@ boxTabs.map((tab, index) => {
 let statsList = document.getElementById('stats')
 
 function loadStats() {
-    let totalItemsOwned = 0
+    totalItemsOwned = 0
     allItems.map(item => {
         totalItemsOwned += item.owned
     })
@@ -433,6 +439,23 @@ clearSaveButton.onclick = async () => {
     updateable = false
     if (!confirm('ARE YOU SURE???\nYou will lose all of your progress, including your cuts, achievements, items,...!!!')) return
     if (!confirm('THINK AGAIN!!!\nWE WILL NOT TAKE RESPONSIBILITY FOR IT!!!')) return
+    clickable = false
+    flushContainer.style.display = 'block'
+    cut.style.zIndex = 999
+    new Audio('fart.mp3').play()
+    let rotation = 0
+    animate()
+    function animate() {
+        requestAnimationFrame(() => {
+            rotation += 5
+            cut.style.rotate = rotation + 'deg'
+            cut.width--
+            if (cut.width) animate()
+        })
+    }
+    setTimeout(() => {
+        location.reload()
+    }, 4400)
     if (username) {
         let itemsOwned = {}
         allItems.map(item => itemsOwned[item.name] = 0)
@@ -451,11 +474,8 @@ clearSaveButton.onclick = async () => {
             timePlayed: 0,
             bigCutSpawned: 0,
         })
-        location.reload()
-    }
-    else {
+    } else {
         localStorage.clear()
-        location.reload()
     }
 }
 
@@ -610,6 +630,11 @@ function unlockAllPossibleAchievement() {
     if (point >= 1e100) unlockAchievement('1 google cuts')
     if (point == Infinity) unlockAchievement('Can\'t count more cut')
     if (Number.isNaN(point)) unlockAchievement('Buggy cuts')
+    //Cuts pooped in total
+    if (totalCuts >= 1000) unlockAchievement('Pooped 1 thousand cuts in total')
+    if (totalCuts >= 1e6) unlockAchievement('Pooped 1 million cuts in total')
+    if (totalCuts >= 1e9) unlockAchievement('Let\'s rewind')
+    if (totalCuts >= 1e12) unlockAchievement('Pooped 1 trillion cuts in total')
     //clicking
     if (cutsPoopedByClicking >= 1000) unlockAchievement('Pooping cursor')
     if (cutsPoopedByClicking >= 1e6) unlockAchievement('Pooped 1 million cuts from clicking')
@@ -621,6 +646,11 @@ function unlockAllPossibleAchievement() {
     if (cutsPerSecond >= 1e6) unlockAchievement('Cut speedrunner')
     if (cutsPerSecond >= 1e9) unlockAchievement('Fast & Cut')
     if (cutsPerSecond >= 1e12) unlockAchievement('World\'s fastest industry')
+    //Items owned
+    if (totalItemsOwned >= 100) unlockAchievement('Own 100 items')
+    if (totalItemsOwned >= 200) unlockAchievement('Own 200 items')
+    if (totalItemsOwned >= 500) unlockAchievement('Own 500 items')
+    if (totalItemsOwned >= 1000) unlockAchievement('Own 1000 items')
     //Baby
     if (getItem('baby').owned >= 1) unlockAchievement('Who needs a potty?')
     if (getItem('baby').owned >= 50) unlockAchievement('Kindergarten')
@@ -710,35 +740,57 @@ function emitAchievementEffect(name) {
         case '1 google cuts':
             multilyEveryItemsAndClickingEfficient(10)
             break
+        //Cuts pooped in total
+        case 'Pooped 1 thousand cuts in total':
+            cutsPerSecond += cutsPerSecond / 4
+            break
+        case 'Pooped 1 trillion cuts in total':
+            cutsPerSecond += cutsPerSecond / 2
+            break
+        case 'Let\'s rewind':
+            cutsPerSecond += cutsPerSecond / 4 * 3
+            break
+        case 'Pooped 1 trillion cuts in total':
+            cutsPerSecond * 2
+            break
         //clicking
         case 'Pooping cursor':
-            multilyClickingEfficient(2)
+            cutsPerClick *= 2
             break
         case 'Pooped 1 million cuts from clicking':
-            multilyClickingEfficient(3)
+            cutsPerClick *= 3
             break
         case 'Pooped 1 billion cuts from clicking':
-            multilyClickingEfficient(4)
+            cutsPerClick *= 4
             break
         case 'Pooped 1 trillion cuts from clicking':
-            multilyClickingEfficient(5)
+            cutsPerClick *= 5
             break
         //CPS
         case 'Super pooper':
-            cutsPerSecond * 110 / 100
-            update()
+            cutsPerSecond += cutsPerSecond / 4
             break
         case 'Cut speedrunner':
-            cutsPerSecond * 120 / 100
-            update()
+            cutsPerSecond += cutsPerSecond / 2
             break
         case 'Fast & Cut':
-            cutsPerSecond * 2
-            update()
+            cutsPerSecond += cutsPerSecond / 4 * 3
             break
         case 'World\'s fastest industry':
-            cutsPerSecond * 3
-            update()
+            cutsPerSecond *= 2
+            break
+        //Items owned
+        case 'Own 100 items':
+            cutsPerSecond += cutsPerSecond / 4
+            break
+        case 'Own 200 items':
+            cutsPerSecond += cutsPerSecond / 2
+            break
+        case 'Own 500 items':
+            cutsPerSecond += cutsPerSecond / 4 * 3
+            break
+        case 'Own 1000 items':
+            cutsPerSecond *= 2
             break
         //Baby
         case 'Kindergarten':
@@ -896,10 +948,7 @@ function emitAchievementEffect(name) {
         cutsPerClick *= n
         loadShop()
     }
-    function multilyClickingEfficient(n) {
-        cutsPerClick *= n
-        update()
-    }
+    update()
 }
 
 //shop
@@ -945,6 +994,10 @@ function buyItem(id) {
         }
         CaoCaoDiarrheaIncrease += 0.1
     }
+    if (achievements.includes('Cover the world with cuts')) cutsPerClick += 10
+    else if (achievements.includes('Cut monopoly')) cutsPerClick += 5
+    else if (achievements.includes('Cut billionaire')) cutsPerClick++
+    else if (achievements.includes('Crazy \'bout cuts!')) cutsPerClick += 0.1
     loadShop()
     loadStats()
     update()
@@ -1044,8 +1097,9 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-devMode()
+// devMode()
 function devMode() {
+    point = 1e10
     itemsUnlocked = allItems.length
     achievements = allAchievements.map(a => a.name)
 }

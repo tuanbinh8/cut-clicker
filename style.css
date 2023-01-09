@@ -5,12 +5,15 @@
     font-family: Sans-serif;
 }
 
-#blur {
-    z-index: 999;
-    display: flex;
+.fullscreen {
     position: absolute;
     width: 100vw;
     height: 100vh;
+}
+
+#blur {
+    z-index: 999;
+    display: flex;
     opacity: 0.5;
     background-color: black;
     justify-content: center;
@@ -51,6 +54,15 @@
 #point-add {
     position: absolute;
     pointer-events: none;
+}
+
+#flush {
+    display: none;
+    background-image: url('img/flush.gif');
+    z-index: 999;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 /* container */
@@ -100,6 +112,7 @@
 #cut {
     cursor: pointer;
     user-select: none;
+
 }
 
 #right {

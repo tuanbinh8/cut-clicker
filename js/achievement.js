@@ -22,19 +22,19 @@ let allAchievements =
             name: 'Cut billionaire',
             img: 'img/elon.png',
             description: 'Have 1 billion cuts',
-            effect: 'Every items and clicking are 4 times as efficient',
+            effect: '<li>Every items and clicking are 4 times as efficient</li><li>From now on, each item bought boosts 1 CPS for clicking</li>',
         },
         {
             name: 'Cut monopoly',
             img: 'img/monopoly.jpg',
             description: 'Have 1 trillion cuts',
-            effect: 'Every items and clicking are 5 times as efficient',
+            effect: '<li>Every items and clicking are 5 times as efficient</li><li>From now on, each item bought boosts 5 CPS for clicking</li>',
         },
         {
             name: 'Cover the world with cuts',
             img: 'img/cover.png',
             description: 'Have 1 quadrillion cuts',
-            effect: 'Every items and clicking are 6 times as efficient',
+            effect: '<li>Every items and clicking are 6 times as efficient</li><li>From now on, each item bought boosts 10 CPS for clicking</li>',
         },
         {
             name: '1 google cuts',
@@ -51,6 +51,31 @@ let allAchievements =
             name: 'Buggy cuts',
             img: 'img/bug.png',
             description: 'Have NaN or undefined cuts',
+        },
+        //Cuts pooped in total
+        {
+            name: 'Pooped 1 thousand cuts in total',
+            img: 'img/bug.png',
+            description: 'Pooped 1 thousand cuts in total',
+            effect: '+25% Cuts per second',
+        },
+        {
+            name: 'Pooped 1 million cuts in total',
+            img: 'img/bug.png',
+            description: 'Pooped 1 million cuts in total',
+            effect: '+50% Cuts per second',
+        },
+        {
+            name: 'Let\'s rewind',
+            img: 'img/bug.png',
+            description: 'Pooped 1 billion cuts in total',
+            effect: '+75% Cuts per second',
+        },
+        {
+            name: 'Pooped 1 trillion cuts in total',
+            img: 'img/bug.png',
+            description: 'Pooped 1 trillion cuts in total',
+            effect: '+100% Cuts per second',
         },
         //clicking
         {
@@ -87,7 +112,7 @@ let allAchievements =
             name: 'Super pooper',
             img: 'img/super-pooper.jpg',
             description: 'Poop 1000 cuts per second',
-            effect: '+10% Cuts per second',
+            effect: '+25% Cuts per second',
         },
         {
             name: 'Cut speedrunner',
@@ -99,38 +124,38 @@ let allAchievements =
             name: 'Fast & Cut',
             img: 'img/fast-cut.jpg',
             description: 'Poop 1 billion cuts per second',
-            effect: '+100% Cuts per second',
+            effect: '+75% Cuts per second',
         },
         {
             name: 'World\'s fastest industry',
             img: 'img/fastest-industry.png',
             description: 'Poop 1 trillion cuts per second',
-            effect: '+200% Cuts per second',
+            effect: '+100% Cuts per second',
         },
-        //Items
-        {
-            name: 'Own 50 items',
-            img: 'img/kindergarten.jpg',
-            description: 'Own 50 items',
-            effect: 'Babies are twice as efficient'
-        },
+        //Items owned
         {
             name: 'Own 100 items',
             img: 'img/kindergarten.jpg',
             description: 'Own 100 items',
-            effect: 'Babies are twice as efficient'
+            effect: '+25% Cuts per second'
         },
         {
             name: 'Own 200 items',
             img: 'img/kindergarten.jpg',
             description: 'Own 200 items',
-            effect: 'Babies are twice as efficient'
+            effect: '+50% Cuts per second'
         },
         {
-            name: 'Own 300 items',
+            name: 'Own 500 items',
             img: 'img/kindergarten.jpg',
-            description: 'Own 300 items',
-            effect: 'Babies are twice as efficient'
+            description: 'Own 500 items',
+            effect: '+75% Cuts per second'
+        },
+        {
+            name: 'Own 1000 items',
+            img: 'img/kindergarten.jpg',
+            description: 'Own 1000 items',
+            effect: '+100% Cuts per second'
         },
         //Baby (done)
         {
