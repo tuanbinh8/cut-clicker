@@ -19,7 +19,6 @@ let animationForm = document.getElementById('options')
 let nameDis = document.getElementById('name')
 let blur = document.getElementById('blur')
 let chatTab = document.querySelectorAll('#right .tab')[3]
-let flushContainer = document.getElementById('flush')
 
 async function init() {
     if (localStorage.token) {
@@ -110,8 +109,6 @@ async function init() {
         leftDivs[1].style.height = window.innerHeight - leftDivs[0].offsetHeight + 'px'
         let rightDivs = document.querySelectorAll('#right > div')
         rightDivs[1].style.height = window.innerHeight - rightDivs[0].offsetHeight + 'px'
-        let leftContainer = document.getElementById('left')
-        flushContainer.style.width = leftContainer.offsetWidth + 'px'
     })
     blur.remove()
 }
@@ -440,6 +437,7 @@ clearSaveButton.onclick = async () => {
     if (!confirm('ARE YOU SURE???\nYou will lose all of your progress, including your cuts, achievements, items,...!!!')) return
     if (!confirm('THINK AGAIN!!!\nWE WILL NOT TAKE RESPONSIBILITY FOR IT!!!')) return
     clickable = false
+    let flushContainer = document.getElementById('flush')
     flushContainer.style.display = 'block'
     cut.style.zIndex = 999
     new Audio('fart.mp3').play()
