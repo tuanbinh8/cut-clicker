@@ -293,6 +293,10 @@ let logInButton = document.getElementById('log-in')
 let signOutButton = document.getElementById('sign-out')
 
 regButton.onclick = async () => {
+    if (!navigator.onLine) {
+        alert('No Internet connection!')
+        return
+    }
     let name = prompt('Create an username:')
     if (await readDataWhere('users', 'name', name)) {
         alert('This username has already been used')
@@ -305,6 +309,10 @@ regButton.onclick = async () => {
 }
 
 logInButton.onclick = async () => {
+    if (!navigator.onLine) {
+        alert('No Internet connection!')
+        return
+    }
     let name = prompt('Enter your username:')
     if (name && name !== '') {
         let pass = prompt('Enter your password:')
@@ -1052,6 +1060,7 @@ function showUnseenChatNumber() {
 }
 
 //else
+window.onoffline = () => signOut()
 init()
 
 function calculateTotalCPS() {

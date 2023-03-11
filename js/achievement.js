@@ -67,7 +67,7 @@ let allAchievements =
         },
         {
             name: 'Let\'s rewind',
-            img: 'img/bug.png',
+            img: 'img/rewind.png',
             description: 'Pooped 1 billion cuts in total',
             effect: '+75% Cuts per second',
         },
